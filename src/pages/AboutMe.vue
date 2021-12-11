@@ -1,13 +1,54 @@
 <template>
-  <div><h1>aboutme</h1></div>
+  <div>
+    <div class="row-item">
+      <div class="col-item">
+        <h3>สำนักงานใหญ่</h3>
+        <div>
+          {{ data1 }}
+        </div>
+      </div>
+      <div class="col-item">
+        <h3>พันธ์ทิพย์ ประตูน้ำ</h3>
+        <div>
+          {{ data2 }}
+        </div>
+      </div>
+    </div>
+    <div class="row-item">
+      <GmapMap :center="center" :zoom="20" style="width: 100%; height: 400px"
+        >
+        <GmapMarker
+          :position="{
+            lat:13.732909843757113,
+            lng:100.43310132740748
+          }"
+        />
+      </GmapMap>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-
-}
+  //13.732909843757113, 100.43310132740748
+  data() {
+    return {
+      data1:
+        "30,32 ซอยเพชรเกษม 48 แยก 51 ถนนเพชรเกษม แขวงบางแวก  เขตภาษีเจริญ กรุงเทพฯ 10160 โทร. 02-457-1001 แฟ็กซ์. 02-457-1002",
+      data2:
+        "ห้อง 304 ชั้น 3 พันธุ์ทิพย์พลาซ่า ประตูน้ำ 604/3 ถนนเพชรบุรี แขวงถนนเพชรบุรี เขตราชเทวี กรุงเทพฯ 10400 โทร. 02-656-5477, 063-642-3282",
+      center: { lat: 13.732909843757113, lng: 100.43310132740748 },
+    };
+  },
+};
 </script>
 
 <style>
-
+.row-item {
+  display: flex;
+}
+.col-item {
+  padding: 10p;
+  flex: 1;
+}
 </style>

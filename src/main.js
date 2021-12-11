@@ -6,7 +6,14 @@ import Home from '@/pages/Home.vue'
 import StickerDesign from '@/pages/StickerDesign.vue'
 import Claim from '@/pages/Claim.vue'
 import Vdo from '@/pages/Vdo.vue'
+import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.config.productionTip = false
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyCW2fzdLg2Cahf1PTLjXSEO8_ek5WYmNP4',
+    libraries: 'places',
+  }
+});
 Vue.use(VueRouter)
 const routes = [
   { path: '/about-me', component: AboutMe },
