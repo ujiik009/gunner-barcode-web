@@ -15,15 +15,26 @@
       </div>
     </div>
     <div class="row-item">
-      <GmapMap :center="center" :zoom="20" style="width: 100%; height: 400px"
-        >
+      <GmapMap :center="center" :zoom="20" style="width: 100%; height: 400px">
         <GmapMarker
           :position="{
-            lat:13.732909843757113,
-            lng:100.43310132740748
+            lat: 13.732909843757113,
+            lng: 100.43310132740748,
           }"
         />
       </GmapMap>
+    </div>
+    <div>
+      <img
+        @click="open_facebook"
+        class="fixed-btn-facebook"
+        src="@/assets/Facebook_logo.png"
+      />
+      <img
+        @click="open_line"
+        class="fixed-btn-line"
+        src="@/assets/line_logo.png"
+      />
     </div>
   </div>
 </template>
@@ -40,6 +51,18 @@ export default {
       center: { lat: 13.732909843757113, lng: 100.43310132740748 },
     };
   },
+  methods: {
+    open_facebook() {
+      window
+        .open("https://web.facebook.com/barcodethaionline/", "_blank")
+        .focus();
+    },
+    open_line() {
+      window
+        .open("https://page.line.me/barcodethai?openQrModal=true", "_blank")
+        .focus();
+    },
+  },
 };
 </script>
 
@@ -48,7 +71,27 @@ export default {
   display: flex;
 }
 .col-item {
-  padding: 10p;
+  padding: 10px;
   flex: 1;
+}
+.fixed-btn-facebook {
+  background-repeat: no-repeat;
+  background-size: auto;
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+.fixed-btn-line {
+  background-repeat: no-repeat;
+  background-size: auto;
+  position: fixed;
+  bottom: 70px;
+  left: 10px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 }
 </style>
