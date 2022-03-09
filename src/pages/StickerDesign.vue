@@ -5,12 +5,15 @@
         <div class="item">
           <div>เลือกชนิดสติ๊กเกอร์</div>
           <div>
-            <select class="select-item" name="" id="">
-              <option value="1">1</option>
+            <select @change="setSize" class="select-item" name="" id="">
+              <!-- <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
-              <option value="5">5</option>
+              <option value="5">5</option> -->
+              <option :value="index"  v-for="(condition_item,index) in sticker_condition" :key="index">
+                {{condition_item.name}}
+              </option>
             </select>
           </div>
         </div>
@@ -18,11 +21,14 @@
           <div>เลือกขนาด</div>
           <div>
             <select class="select-item" name="" id="">
-              <option value="1">1</option>
+              <!-- <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
-              <option value="5">5</option>
+              <option value="5">5</option> -->
+              <option value="" v-for="(size_item ,index) in size" :key="index">
+                {{size_item.size}}
+              </option>
             </select>
           </div>
         </div>
@@ -70,7 +76,21 @@
 </template>
 
 <script>
-export default {};
+import sticker_condition from "../assets/sticker_condition.json"
+export default {
+  data(){
+    return {
+      sticker_condition:sticker_condition,
+      size:[]
+    }
+  },
+  methods:{
+    setSize(event){
+      // this.size=list
+      this.size=this.sticker_condition[event.target.value].size
+    }
+  }
+};
 </script>
 
 <style>

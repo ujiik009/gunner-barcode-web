@@ -1,0 +1,577 @@
+[
+    {
+        "name": "สติ๊กเกอร์กึ่งมันกึ่งด้าน",
+        "size": [
+            {
+                "size": "2.2 x 1.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "3.0 x 1.5 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "3.0 x 2.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 5000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "3.2 x 2.5 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 5000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "3.4 x 2.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 5000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "3.4 x 4.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "3.5 x 2.5 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 5000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "4.0 x 3.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.0 x 2.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.0 x 2.5 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.0 x 3.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.0 x 3.5 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.0 x 5.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 2000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.2 x 3.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 3000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.2 x 4.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 2500
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "7.0 x 5.0 ซม",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 1000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "10.0 x 3.5 ซม",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 1000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "10.0 x 5.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 1000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "10.2 x 7.6 ซม",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 500
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "4 x 6 นิ้ว",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 500
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "สติ๊กเกอร์เนื้อไดเร็คเทอร์มอลล์",
+        "size": [
+            {
+                "size": "2.2 x 1.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 200
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "สติ๊กเกอร์เนื้อพีพีขาวด้าน (ทนความเย็น)",
+        "size": [
+            {
+                "size": "2.2 x 1.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 200
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "สติ๊กเกอร์ฟอยล์เงินด้าน (ทนความร้อน)",
+        "size": [
+            {
+                "size": "2.2 x 1.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 200
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "สติ๊กเกอร์พิมพ์โลโก้สินค้า",
+        "size":[
+            {
+                "size": "2.2 x 1.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 200
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "สติ๊กเกอร์จิวเวลรี่",
+        "size":[
+            {
+                "size": "2.2 x 1.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 200
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "สติ๊กเกอร์สำหรับเครื่องพิมพ์อิงค์เจท Primera",
+        "size": [
+            {
+                "size": "5.0 x 6.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "6.3 x 7.2 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "6.44 x 4.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "7.0 x 7.0 ซม",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "7.5 x 10.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "8.0 x 4.8 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "8.0 x 6.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "9.0 x 5.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "9.0 x 6.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "10.0 x 8.0 ซม.",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "size": "5.08 x 3.81 ซม",
+                "type": [
+                    {
+                        "name": "ปั้มเปล่า",
+                        "colors": [
+                            {
+                                "name": "white",
+                                "color": "#FFFFFF",
+                                "min_order": 10000
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
