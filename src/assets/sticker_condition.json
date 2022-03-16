@@ -7,11 +7,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -22,11 +22,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -37,11 +37,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 5000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 5000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -52,11 +52,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 5000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 5000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -67,11 +67,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 5000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 5000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -82,11 +82,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -97,11 +97,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 5000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 5000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -112,11 +112,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -127,11 +127,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -142,11 +142,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -157,11 +157,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -172,11 +172,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -187,11 +187,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 2000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 2000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -202,11 +202,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 3000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 3000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -217,11 +217,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 2500,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 2500
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -232,11 +232,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 1000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 1000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -247,11 +247,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 1000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 1000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -262,11 +262,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 1000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 1000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -277,11 +277,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 500,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 500
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -292,11 +292,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 500,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 500
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -312,11 +312,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 200,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 200
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -332,11 +332,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 200,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 200
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -352,11 +352,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 200,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 200
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -372,11 +372,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 200,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 200
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -392,11 +392,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 200,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 200
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -412,11 +412,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -427,11 +427,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -442,11 +442,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -457,11 +457,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -472,11 +472,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -487,11 +487,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -502,11 +502,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -517,11 +517,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -532,11 +532,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -547,11 +547,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
@@ -562,11 +562,11 @@
                 "type": [
                     {
                         "name": "ปั้มเปล่า",
+                        "min_order": 10000,
                         "colors": [
                             {
                                 "name": "white",
-                                "color": "#FFFFFF",
-                                "min_order": 10000
+                                "color": "#FFFFFF"
                             }
                         ]
                     }
