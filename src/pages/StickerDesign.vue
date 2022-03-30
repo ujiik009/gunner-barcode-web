@@ -37,24 +37,24 @@
         <div class="item">
           <div>เลือกสี</div>
           <div>
-            <input class="select-item" type="color" id="favcolor" name="favcolor" value="#ff">
-            <!-- <select class="select-item" name="" id="">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select> -->
+            <input class="select-item" type="color" id="favcolor" name="favcolor" value="#fff">
           </div>
         </div>
         <div class="item">
-          <div>เลือกจำนวนการผลิต{{min_order}} </div>
+          <div>เลือกจำนวนการผลิต </div>
           <div>
             <input type="number" :min="min_order">
           </div>
         </div>
+         <div class="item">
+          <div>อัพโหลดแบบสติ๊กเกอร์ </div>
+          <div>
+            <input type="file" accept="image/png, image/jpeg">
+          </div>
+        </div>
       </div>
     </div>
+    <div><button style="float: right;margin-right: 50px;">ยืนยันแบบ</button></div>
   </div>
 </template>
 
