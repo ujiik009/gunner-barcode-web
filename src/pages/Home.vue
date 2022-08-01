@@ -10,7 +10,7 @@
           <center>
             <b-tooltip :target="item.id"> {{ item.name }}</b-tooltip>
             <img :src="item.images" alt="" :id="item.id">
-            </center>
+          </center>
         </div>
         <!-- <div style="flex:1">
           <center><img :src="promotion_img[0]" alt=""></center>
@@ -28,7 +28,9 @@
         <div style="flex:1" v-for="(item, index) in best_seller_data" :key="index">
           <center>
             <b-tooltip :target="item.id"> {{ item.product_name }}</b-tooltip>
-            <img :src="item.img_link" alt="" :id="item.id">
+            
+              <img :src="item.img_link" alt="" :id="item.id" @click="openDetail(item.id)">
+           
           </center>
         </div>
       </div>
@@ -58,6 +60,9 @@ export default {
         .then((res) => {
           this.promotions_data = res.data.data
         })
+    },
+    openDetail(product_id) {
+      this.$router.push(`/product/detail/${product_id}`)
     }
   },
   data: () => ({
