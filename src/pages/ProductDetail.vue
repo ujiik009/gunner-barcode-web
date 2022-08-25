@@ -28,7 +28,7 @@
                     <div>Discount : {{product_item.discount}}</div>
                 </div>
                 <div>
-                    <input type="number" id="quantity" name="quantity" min="1" style="margin-right:5px;" />
+                    <input type="number" v-model="qty" id="quantity" name="quantity" min="1" style="margin-right:5px;" />
                     <b-button variant="warning" @click="addToCart">ADD TO CART</b-button>
                 </div>
             </div>
@@ -42,6 +42,7 @@ var base_url = "http://127.0.0.1:3333"
 export default {
     data() {
         return {
+            qty:0,
             product_item: {
                 id: "",
                 product_name: "",
@@ -70,6 +71,7 @@ export default {
         },
         addToCart() {
             alert("addToCart")
+            
         }
     }
 }
