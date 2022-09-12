@@ -25,11 +25,12 @@
                 </div>
                 <div>
                     <div class="price_number"> {{ product_item.price }} BATH </div>
-                    <div>Discount : {{product_item.discount}}</div>
+                    <div>Discount : {{ product_item.discount }}</div>
                 </div>
                 <div>
-                    <input type="number" v-model="qty" id="quantity" name="quantity" min="1" style="margin-right:5px;" />
-                    <b-button variant="warning" @click="addToCart">ADD TO CART</b-button>
+                    <input type="number" v-model="qty" id="quantity" name="quantity" min="1"
+                        style="margin-right:5px;" />
+                    <b-button variant="warning" @click="addCart(product_item,qty)">ADD TO CART</b-button>
                 </div>
             </div>
         </div>
@@ -38,11 +39,12 @@
 
 <script>
 import axios from "axios"
+import { useMainStore } from "../store";
 var base_url = "http://127.0.0.1:3333"
 export default {
     data() {
         return {
-            qty:0,
+            qty: 0,
             product_item: {
                 id: "",
                 product_name: "",
@@ -71,7 +73,18 @@ export default {
         },
         addToCart() {
             alert("addToCart")
-            
+
+        }
+    },
+    setup() {
+        const main = useMainStore();
+        function addCart(item,qty){
+            main.addCart({...item,qty})
+        }
+
+        return {
+            addCart: addCart,
+            cart:main.carts
         }
     }
 }

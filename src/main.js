@@ -13,6 +13,9 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { createPinia } from 'pinia'
+const pinia = createPinia()
+	
 Vue.config.productionTip = false
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
@@ -26,6 +29,7 @@ Vue.use(VueGoogleMaps, {
   }
 });
 Vue.use(VueRouter)
+Vue.use(pinia)
 const routes = [
   { path: '/about-me', component: AboutMe },
   { path: '/home', component: Home },
@@ -43,4 +47,5 @@ const router = new VueRouter({
 new Vue({
   router,
   render: h => h(App),
-}).$mount('#app')
+})
+.$mount('#app')
