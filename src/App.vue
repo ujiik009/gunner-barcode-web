@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <MainLayout/>
+    <MainLayout />
   </div>
 </template>
 
@@ -17,4 +17,5 @@ export default {
 </script>
 
 <style>
+
 </style>
