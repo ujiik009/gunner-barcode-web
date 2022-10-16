@@ -58,8 +58,8 @@
                             <path
                                 d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
                         </svg>
-                        <span @dblclick="layer.name_edit = true"
-                            v-if="layer.name_edit == false">{{layer.name_display}}</span>
+                        <span @dblclick="layer.name_edit = true" v-if="layer.name_edit == false">{{layer.name_display}}
+                            {{layer.zIndex}}</span>
                         <input class="change_name_input" v-else v-model="layer.name_display"
                             @blur="layer.name_edit = false" />
                     </div>
@@ -68,26 +68,17 @@
             <!-- {{context_menu_layer_open}} -->
             <div id="context-menu-layer" ref="context_menu_layer" v-show="context_menu_layer_open == true"
                 v-click-outside="hide_context_menu_layer">
-                <div @click="SendBackLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                        height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
-                        <path
-                            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
-                    </svg> <span>Send to Back</span>
-                </div>
-
                 <div @click="SendFrontLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
                         width="16" height="16" fill="currentColor" class="bi bi-front" viewBox="0 0 16 16">
                         <path
                             d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5z" />
                     </svg> <span>Send to Front</span>
                 </div>
-                <div @click="SendBackwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
-                        width="16" height="16" fill="currentColor" class="bi bi-layer-backward" viewBox="0 0 16 16">
+                <div @click="SendBackLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                        height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
                         <path
-                            d="M8.354 15.854a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708l1-1a.5.5 0 0 1 .708 0l.646.647V4H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9v7.793l.646-.647a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1 0 .708l-3 3z" />
-                        <path
-                            d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
-                    </svg> <span>Send Backwards</span>
+                            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                    </svg> <span>Send to Back</span>
                 </div>
                 <div @click="SendForwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
                         width="16" height="16" fill="currentColor" class="bi bi-layer-forward" viewBox="0 0 16 16">
@@ -97,6 +88,15 @@
                             d="M1 7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h4.5a.5.5 0 0 0 0-1H1V8h4.5a.5.5 0 0 0 0-1H1zm9.5 0a.5.5 0 0 0 0 1H15v2h-4.5a.5.5 0 0 0 0 1H15a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-4.5z" />
                     </svg> <span>Send Forwards</span>
                 </div>
+                <div @click="SendBackwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-layer-backward" viewBox="0 0 16 16">
+                        <path
+                            d="M8.354 15.854a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708l1-1a.5.5 0 0 1 .708 0l.646.647V4H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9v7.793l.646-.647a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1 0 .708l-3 3z" />
+                        <path
+                            d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
+                    </svg> <span>Send Backwards</span>
+                </div>
+
                 <div @click="delete_layer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                         height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path
@@ -116,26 +116,17 @@
             </div>
             <div id="context-menu-object" ref="context_menu_object" v-show="context_menu_object_open == true"
                 @contextmenu="handleContentMenu" v-click-outside="hide_context_menu_object">
-                <div @click="SendBackLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                        height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
-                        <path
-                            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
-                    </svg> <span>Send to Back</span>
-                </div>
-
                 <div @click="SendFrontLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
                         width="16" height="16" fill="currentColor" class="bi bi-front" viewBox="0 0 16 16">
                         <path
                             d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5z" />
                     </svg> <span>Send to Front</span>
                 </div>
-                <div @click="SendBackwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
-                        width="16" height="16" fill="currentColor" class="bi bi-layer-backward" viewBox="0 0 16 16">
+                <div @click="SendBackLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                        height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
                         <path
-                            d="M8.354 15.854a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708l1-1a.5.5 0 0 1 .708 0l.646.647V4H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9v7.793l.646-.647a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1 0 .708l-3 3z" />
-                        <path
-                            d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
-                    </svg> <span>Send Backwards</span>
+                            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                    </svg> <span>Send to Back</span>
                 </div>
                 <div @click="SendForwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
                         width="16" height="16" fill="currentColor" class="bi bi-layer-forward" viewBox="0 0 16 16">
@@ -145,6 +136,16 @@
                             d="M1 7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h4.5a.5.5 0 0 0 0-1H1V8h4.5a.5.5 0 0 0 0-1H1zm9.5 0a.5.5 0 0 0 0 1H15v2h-4.5a.5.5 0 0 0 0 1H15a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-4.5z" />
                     </svg> <span>Send Forwards</span>
                 </div>
+
+                <div @click="SendBackwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-layer-backward" viewBox="0 0 16 16">
+                        <path
+                            d="M8.354 15.854a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708l1-1a.5.5 0 0 1 .708 0l.646.647V4H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9v7.793l.646-.647a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1 0 .708l-3 3z" />
+                        <path
+                            d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
+                    </svg> <span>Send Backwards</span>
+                </div>
+
                 <div @click="delete_layer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                         height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path
@@ -323,8 +324,13 @@ export default {
             this.reIndexLayer()
         },
         reIndexLayer() {
+
+            const stage = this.$refs.stage.getNode();
             this.layers = this.layers.map((layer, index) => {
-                layer.zIndex = this.layers.length - index
+                layer.zIndex = (this.layers.length - 1) - index
+                const selectedNode = stage.findOne('.' + layer.name);
+                selectedNode.setZIndex(layer.zIndex)
+
                 return layer
             })
         },
@@ -404,7 +410,6 @@ export default {
                 rect.width = e.target.width()
                 rect.height = e.target.height()
                 rect.name = e.target.name()
-
                 this.layers[find_index] = rect
                 // change fill
             } else {
@@ -436,8 +441,8 @@ export default {
                 return;
             }
 
-            console.log(selectionRectangle.visible(),);
-
+            var rect = this.layers.find(x => x.name == e.target.attrs.name)
+           
             if (selectionRectangle.visible()) {
                 return
             } else {
@@ -455,7 +460,7 @@ export default {
 
                     const name = e.target.name();
 
-                    const rect = this.layers.find((r) => r.name === name);
+
                     if (rect) {
                         this.selectedShapeName = name;
                         this.index_layer_selected = this.layers.findIndex((r) => r.name === name);
@@ -520,7 +525,7 @@ export default {
                 const transformerNode = this.$refs.transformer.getNode();
                 transformerNode.nodes(selected);
                 this.selectedShapeNameMulti = selected.map(x => x.attrs.name)
-                this.selectedShapeName  = ''
+                this.selectedShapeName = ''
             }, 1);
 
 
