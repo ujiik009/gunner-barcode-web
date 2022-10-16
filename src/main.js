@@ -10,10 +10,14 @@ import ProductDetail from '@/pages/ProductDetail'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import LazyTube from "vue-lazytube";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import VueKonva from 'vue-konva';
+import VSwitch from 'v-switch-case'
+
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { createPinia } from 'pinia'
+
 const pinia = createPinia()
 	
 Vue.config.productionTip = false
@@ -28,9 +32,14 @@ Vue.use(VueGoogleMaps, {
     libraries: 'places',
   }
 });
+
+
 Vue.use(VueRouter)
 Vue.use(pinia)
+Vue.use(VueKonva);
+Vue.use(VSwitch)
 const routes = [
+  { path: '/', redirect: '/home' },
   { path: '/about-me', component: AboutMe },
   { path: '/home', component: Home },
   { path: '/stickerdesign', component: StickerDesign },

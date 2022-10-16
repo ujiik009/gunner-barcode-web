@@ -17,10 +17,17 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "gitart-scroll-carousel": "0.0.3",
+    "konva": "^8.3.13",
     "pinia": "^2.0.22",
+    "uuid": "^9.0.0",
+    "v-switch-case": "^1.0.3",
     "vue": "^2.6.14",
+    "vue-click-outside": "^1.1.0",
+    "vue-color": "^2.8.1",
+    "vue-konva": "^2.1.7",
     "vue-lazytube": "^1.0.2",
     "vue-router": "^3.5.3",
+    "vue-stepper-component": "^1.0.0",
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {

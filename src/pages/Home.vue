@@ -220,7 +220,7 @@ export default {
   height: 40px;
   display: flex;
   justify-content: center;
-  margin-top: 1%;
+  /* margin-top: 1%; */
 }
 
 .box-std {
@@ -244,7 +244,7 @@ export default {
 
 .main-content {
 
-  margin-top: 100px;
+  /* margin-top: 100px; */
   height: 100vh;
 }
 

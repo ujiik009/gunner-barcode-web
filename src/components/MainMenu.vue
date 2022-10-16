@@ -46,9 +46,9 @@ export default {
  
 }
 .sticky {
-  position: fixed;
+  /* position: fixed;
   top: 0;
-  width: 100%;
+  width: 100%; */
 }
 .link:hover:hover{
   color: rgb(232, 142, 255);

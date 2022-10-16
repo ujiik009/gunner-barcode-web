@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <div class="box-content">
+  <div class="main-content">
+    <!-- <div class="box-content">
       <div class="box-item">
         <div class="item">
           <div>เลือกชนิดสติ๊กเกอร์</div>
           <div>
             <select @click="setSize" class="select-item" name="" id="">
-              <option :value="index"  v-for="(condition_item,index) in sticker_condition" :key="index">
+              <option :value="index" v-for="(condition_item,index) in sticker_condition" :key="index">
                 {{condition_item.name}}
               </option>
             </select>
@@ -46,72 +46,304 @@
             <input type="number" :min="min_order">
           </div>
         </div>
-         <div class="item">
+        <div class="item">
           <div>อัพโหลดแบบสติ๊กเกอร์ </div>
           <div>
             <input type="file" accept="image/png, image/jpeg">
           </div>
         </div>
       </div>
-    </div>
+    </div> 
     <div><button style="float: right;margin-right: 50px;">ยืนยันแบบ</button></div>
+    -->
+    <!-- Stepper -->
+    <div class="content">
+      <div class=" md-stepper-horizontal orange">
+        <div :class="{'md-step':true,active:step.active,editable:step.editable,done:step.done}"
+          v-for="(step,index) in steps" :key="index" @click="clickActive(index)">
+          <div class="md-step-circle"><span>{{index+1}}</span></div>
+          <div class="md-step-title">{{step.title}}</div>
+          <div class="md-step-optional" v-if="step.optional">Optional</div>
+          <div class="md-step-bar-left"></div>
+          <div class="md-step-bar-right"></div>
+        </div>
+      </div>
+      <div>
+        <div v-if="step == 0">
+          เลือกขนาด
+        </div>
+        <div v-if="step == 1">
+          <StickerDesignComponent />
+          
+
+        </div>
+        <div v-if="step == 2">ยืนยันแบบ</div>
+      </div>
+
+    </div>
+
+
+
   </div>
 </template>
 
 <script>
 import sticker_condition from "../assets/sticker_condition.json"
+import StickerDesignComponent from "../components/StickerDesignComponent.vue"
+
+// import StickerEditor from "../components/StickerEditor.vue"
 export default {
-  data(){
+  components: {
+    StickerDesignComponent,
+    // StickerEditor
+  },
+  data() {
     return {
-      sticker_condition:sticker_condition,
-      size:[],
-      type:[],
-      min_order:100,
-      index_sticker:0,
-      index_size:0,
-      index_type:0
+      sticker_condition: sticker_condition,
+      size: [],
+      type: [],
+      min_order: 100,
+      index_sticker: 0,
+      index_size: 0,
+      index_type: 0,
+      step: 0,
+      steps: [
+        {
+          title: "เลือกขนาด",
+          optional: false,
+          done: false,
+          editable: true,
+          active: true
+        },
+        {
+          title: "ออกแบบสตกเกอร์",
+          optional: true,
+          done: false,
+          editable: false,
+          active: false
+        },
+        {
+          title: "ยืนยันแบบ",
+          optional: false,
+          done: false,
+          editable: false,
+          active: false
+        },
+      ]
     }
   },
-  created(){
+  created() {
     this.loadValue()
   },
-  methods:{
-    loadValue(){
-      this.size=this.sticker_condition[this.index_sticker].size
-      this.type=this.sticker_condition[this.index_sticker].size[this.index_size].type
-      this.min_order=this.sticker_condition[this.index_sticker].size[this.index_size].type[this.index_type].min_order
+  methods: {
+    loadValue() {
+      this.size = this.sticker_condition[this.index_sticker].size
+      this.type = this.sticker_condition[this.index_sticker].size[this.index_size].type
+      this.min_order = this.sticker_condition[this.index_sticker].size[this.index_size].type[this.index_type].min_order
     },
-    setSize(event){
+    setSize(event) {
       // this.size=list
-      this.index_sticker=event.target.value
-      this.size=this.sticker_condition[event.target.value].size
+      this.index_sticker = event.target.value
+      this.size = this.sticker_condition[event.target.value].size
     },
-    setType(event){
-      this.index_size=event.target.value
-      this.type=this.sticker_condition[this.index_sticker].size[event.target.value].type
+    setType(event) {
+      this.index_size = event.target.value
+      this.type = this.sticker_condition[this.index_sticker].size[event.target.value].type
     },
-    selectType(event){
-     this.index_type=event.target.value
-     this.min_order=this.sticker_condition[this.index_sticker].size[this.index_size].type[event.target.value].min_order
-     
+    selectType(event) {
+      this.index_type = event.target.value
+      this.min_order = this.sticker_condition[this.index_sticker].size[this.index_size].type[event.target.value].min_order
+    },
+    clickActive(step_number) {
+      this.step = step_number
+      this.steps[step_number].editable = true
+      this.steps[step_number].active = true
+      // set step lower then current to done
+      this.steps.map((step, index) => {
+        if (index < step_number) {
+          this.steps[index].done = true
+          this.steps[index].editable = false
+          this.steps[index].active = true
+        } else if (index > step_number) {
+          this.steps[index].done = false
+          this.steps[index].editable = false
+          this.steps[index].active = false
+        }
+      })
     }
   }
 };
 </script>
 
 <style>
+.main-content {
+  height: 100vh;
+}
+
+.content {
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 1%;
+  position: relative;
+}
+
 .box-content {
   display: flex;
   padding: 10px;
 }
+
 .box-item {
   flex: 1;
 }
-.select-item{
+
+.select-item {
   width: 250px;
 }
-.item{
+
+.item {
   margin: 20px;
   font-size: 22px;
+}
+
+.md-stepper-horizontal {
+  display: table;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  /* box-shadow: 0 3px 8px -6px rgba(0, 0, 0, .50); */
+}
+
+.md-stepper-horizontal .md-step {
+  display: table-cell;
+  position: relative;
+  padding: 24px;
+  cursor: pointer;
+}
+
+.md-stepper-horizontal .md-step:hover,
+.md-stepper-horizontal .md-step:active {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.md-stepper-horizontal .md-step:active {
+  border-radius: 15% / 75%;
+}
+
+.md-stepper-horizontal .md-step:first-child:active {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.md-stepper-horizontal .md-step:last-child:active {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.md-stepper-horizontal .md-step:hover .md-step-circle {
+  background-color: #757575;
+}
+
+.md-stepper-horizontal .md-step:first-child .md-step-bar-left,
+.md-stepper-horizontal .md-step:last-child .md-step-bar-right {
+  display: none;
+}
+
+.md-stepper-horizontal .md-step .md-step-circle {
+  width: 30px;
+  height: 30px;
+  margin: 0 auto;
+  background-color: #999999;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.md-stepper-horizontal.green .md-step.active .md-step-circle {
+  background-color: #00AE4D;
+}
+
+.md-stepper-horizontal.orange .md-step.active .md-step-circle {
+  background-color: #F96302;
+}
+
+.md-stepper-horizontal .md-step.active .md-step-circle {
+  background-color: rgb(33, 150, 243);
+}
+
+.md-stepper-horizontal .md-step.done .md-step-circle:before {
+  font-family: 'FontAwesome';
+  font-weight: 100;
+  content: "\f00c";
+}
+
+.md-stepper-horizontal .md-step.done .md-step-circle *,
+.md-stepper-horizontal .md-step.editable .md-step-circle * {
+  display: none;
+}
+
+.md-stepper-horizontal .md-step.editable .md-step-circle {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.md-stepper-horizontal .md-step.editable .md-step-circle:before {
+  font-family: 'FontAwesome';
+  font-weight: 100;
+  content: "\f040";
+}
+
+.md-stepper-horizontal .md-step .md-step-title {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.md-stepper-horizontal .md-step .md-step-title,
+.md-stepper-horizontal .md-step .md-step-optional {
+  text-align: center;
+  color: rgba(0, 0, 0, .26);
+}
+
+.md-stepper-horizontal .md-step.active .md-step-title {
+  font-weight: 600;
+  color: rgba(0, 0, 0, .87);
+}
+
+.md-stepper-horizontal .md-step.active.done .md-step-title,
+.md-stepper-horizontal .md-step.active.editable .md-step-title {
+  font-weight: 600;
+}
+
+.md-stepper-horizontal .md-step .md-step-optional {
+  font-size: 12px;
+}
+
+.md-stepper-horizontal .md-step.active .md-step-optional {
+  color: rgba(0, 0, 0, .54);
+}
+
+.md-stepper-horizontal .md-step .md-step-bar-left,
+.md-stepper-horizontal .md-step .md-step-bar-right {
+  position: absolute;
+  top: 36px;
+  height: 1px;
+  border-top: 1px solid #DDDDDD;
+}
+
+.md-stepper-horizontal .md-step .md-step-bar-right {
+  right: 0;
+  left: 50%;
+  margin-left: 20px;
+}
+
+.md-stepper-horizontal .md-step .md-step-bar-left {
+  left: 0;
+  right: 50%;
+  margin-right: 20px;
 }
 </style>
