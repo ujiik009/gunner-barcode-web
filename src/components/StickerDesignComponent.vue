@@ -9,12 +9,16 @@
                 <v-layer>
                     <div v-for="item in layers" :key="item.name">
                         <div v-switch="item.type">
+                            <v-text v-if="!item.disable  && item.type == 'text'" :config="item"
+                                @transform="handleTransform" @transformend="handleTransformEnd"
+                                @dragend="handleTransformEnd" @click="handleClick" />
                             <v-rect v-if="!item.disable && item.type == 'rect'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
                             <v-circle v-if="!item.disable  && item.type == 'circle'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
                             <v-regular-polygon v-if="!item.disable  && item.type == 'regular-polygon'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
+
                         </div>
 
                     </div>
@@ -240,6 +244,16 @@ export default {
                 e.preventDefault()
             }
         },
+        handleTransform(e) {
+
+            var MIN_WIDTH = 20
+            e.target.setAttrs({
+                width: Math.max(e.target.width() * e.target.scaleX(), MIN_WIDTH),
+                height: e.target.height()*e.target.scaleY(),
+                scaleX: 1,
+                scaleY: 1,
+            });
+        },
         handleTransformEnd(e) {
 
             // shape is transformed, let us save new attrs back to the node
@@ -252,8 +266,13 @@ export default {
             rect.x = e.target.x();
             rect.y = e.target.y();
             rect.rotation = e.target.rotation();
+
             rect.scaleX = e.target.scaleX();
             rect.scaleY = e.target.scaleY();
+            rect.width = e.target.width()
+            rect.height = e.target.height()
+
+            console.log(e.target);
             this.layers[this.index_layer_selected] = rect
             // change fill
             // rect.fill = this.colors.hex
@@ -361,19 +380,22 @@ export default {
             switch (menu_type) {
                 case "text": {
                     this.layers.push({
-                        disable: false,
                         type: "text",
+                        disable: false,
+                        name_edit: false,
+                        rotation: 0,
+                        x: 150,
+                        y: 150,
+                        text: "samplesadasdasfasgas asfasfasd assad",
+                        fontSize: 32,
+                        width: 300,
+                        height: 100,
+                        scaleX: 1,
+                        scaleY: 1,
+                        fill: this.colors.hex,
                         name: uuidv4(),
                         name_display: "text",
-                        name_edit: false,
-                        x: 0,
-                        y: 0,
-                        width: 0,
-                        height: 0,
-                        opacity: 100,
-                        meta_data: {
-
-                        }
+                        draggable: true,
                     })
                     break;
                 }
