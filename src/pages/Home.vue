@@ -29,7 +29,7 @@
             <span>เพิ่มเติม</span>
           </div> -->
           <div class="load-more-panel">
-            55
+            
           </div>
         </div>
         <div style="flex:1">

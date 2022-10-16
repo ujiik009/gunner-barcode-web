@@ -5,25 +5,30 @@
 
             </canvas>
             <v-stage ref="stage" :config="configKonva" style="position: absolute;top:0"
-                @mousedown="handleStageMouseDown" @touchstart="handleStageMouseDown" @contextmenu="handleContentMenu">
+                @mousedown="handleStageMouseDown" @mousemove="handleStageMouseMove" @mouseup="handleStageMouseUp"
+                @touchstart="handleStageMouseDown" @contextmenu="handleContentMenu">
                 <v-layer>
+                    <v-transformer ref="transformer"
+                        :config="{borderDash: [4, 3],padding:10,anchorFill:'#fd7e14',anchorCornerRadius: 5,borderStroke:'#fd7e14',anchorStroke:'#fd7e14'}" />
                     <div v-for="item in layers" :key="item.name">
                         <div v-switch="item.type">
-                            <v-text v-if="!item.disable  && item.type == 'text'" :config="item"
+                            <v-text class="shape" v-if="!item.disable  && item.type == 'text'" :config="item"
                                 @transform="handleTransform" @transformend="handleTransformEnd"
-                                @dragend="handleTransformEnd" @click="handleClick" />
-                            <v-rect v-if="!item.disable && item.type == 'rect'" :config="item"
+                                @dragend="handleTransformEnd" @click="handleClick" @dblclick="handleEditText"
+                                @dbtap="handleEditText" />
+                            <v-rect class="shape" v-if="!item.disable && item.type == 'rect'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
-                            <v-circle v-if="!item.disable  && item.type == 'circle'" :config="item"
+                            <v-circle class="shape" v-if="!item.disable  && item.type == 'circle'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
-                            <v-regular-polygon v-if="!item.disable  && item.type == 'regular-polygon'" :config="item"
-                                @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
+                            <v-regular-polygon class="shape" v-if="!item.disable  && item.type == 'regular-polygon'"
+                                :config="item" @transformend="handleTransformEnd" @dragend="handleTransformEnd"
+                                @click="handleClick" />
 
                         </div>
 
                     </div>
+                    <v-rect ref="selection_rectangle" :config="{fill: '#fd7e1475',visible: false}" />
 
-                    <v-transformer ref="transformer" />
                 </v-layer>
 
             </v-stage>
@@ -34,8 +39,9 @@
             <div id="layers">
                 <div id="layer-title">Layers ({{layers.length}})</div>
                 <div id="layers-body">
-                    <div :class="{disable:layer.disable,'layer-item':true}" v-for="(layer,index) in layers" :key="index"
-                        :ref="layer.name" @contextmenu="context_menu_layer(index,$event)"
+
+                    <div :class="{disable:layer.disable,'layer-item':true}" v-for="(layer,index) in layers"
+                        :key="layer.name" :ref="layer.name" @contextmenu="context_menu_layer(index,$event)"
                         @click="clickSelectLayerItem(layer.name,index)">
                         <svg style="cursor: pointer" @click="layer.disable = !layer.disable" v-if="layer.disable==false"
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -81,6 +87,35 @@
             </div>
             <div id="context-menu-object" ref="context_menu_object" v-show="context_menu_object_open == true"
                 @contextmenu="handleContentMenu" v-click-outside="hide_context_menu_object">
+                <div @click="SendBackLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                        height="16" fill="currentColor" class="bi bi-back" viewBox="0 0 16 16">
+                        <path
+                            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H2z" />
+                    </svg> <span>Send to Back</span>
+                </div>
+
+                <div @click="SendFrontLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-front" viewBox="0 0 16 16">
+                        <path
+                            d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5z" />
+                    </svg> <span>Send to Front</span>
+                </div>
+                <div @click="SendBackwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-layer-backward" viewBox="0 0 16 16">
+                        <path
+                            d="M8.354 15.854a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708l1-1a.5.5 0 0 1 .708 0l.646.647V4H1a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9v7.793l.646-.647a.5.5 0 0 1 .708 0l1 1a.5.5 0 0 1 0 .708l-3 3z" />
+                        <path
+                            d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
+                    </svg> <span>Send Backwards</span>
+                </div>
+                <div @click="SendForwardsLayer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-layer-forward" viewBox="0 0 16 16">
+                        <path
+                            d="M8.354.146a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 0 .708l1 1a.5.5 0 0 0 .708 0L7 4.207V12H1a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H9V4.207l.646.647a.5.5 0 0 0 .708 0l1-1a.5.5 0 0 0 0-.708l-3-3z" />
+                        <path
+                            d="M1 7a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h4.5a.5.5 0 0 0 0-1H1V8h4.5a.5.5 0 0 0 0-1H1zm9.5 0a.5.5 0 0 0 0 1H15v2h-4.5a.5.5 0 0 0 0 1H15a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-4.5z" />
+                    </svg> <span>Send Forwards</span>
+                </div>
                 <div @click="delete_layer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                         height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path
@@ -132,11 +167,13 @@
 import { Chrome } from 'vue-color'
 import ClickOutside from 'vue-click-outside'
 import { v4 as uuidv4 } from 'uuid';
+import Konva from "konva"
 
 var const_data = {
     CLICK_LEFT: 0,
     CLICK_RIGHT: 2
 }
+var x1, y1, x2, y2;
 function getPosition(el) {
     var x = 0;
     var y = 0;
@@ -149,7 +186,8 @@ function getPosition(el) {
 }
 export default {
     components: {
-        'chrome-picker': Chrome
+        'chrome-picker': Chrome,
+
     },
     mounted() {
         this.drawGrid()
@@ -157,6 +195,7 @@ export default {
     data() {
         return {
             configKonva: {
+
                 width: 1000,
                 height: 1000
             },
@@ -165,6 +204,7 @@ export default {
             ],
             selecteditem: null,
             selectedShapeName: '',
+            selectedShapeNameMulti: [],
             index_layer_selected: -1,
             x: 0,
             y: 0,
@@ -222,20 +262,78 @@ export default {
         ClickOutside
     },
     methods: {
+        SendBackLayer() {
+
+            this.reOrderLayers(this.index_layer_selected, this.layers.length - 1)
+        },
+        SendFrontLayer() {
+            console.log("SendFrontLayer", this.index_layer_selected);
+            this.reOrderLayers(this.index_layer_selected, 0)
+        },
+        SendBackwardsLayer() {
+            var next_index = ((this.index_layer_selected + 1) > this.layers.length - 1) ? this.layers.length - 1 : this.index_layer_selected + 1
+            this.reOrderLayers(this.index_layer_selected, next_index)
+            this.index_layer_selected = next_index
+        },
+        SendForwardsLayer() {
+            console.log("SendForwardsLayer");
+            var previous_index = ((this.index_layer_selected - 1) < 0) ? 0 : this.index_layer_selected - 1
+            this.reOrderLayers(this.index_layer_selected, previous_index)
+            this.index_layer_selected = previous_index
+        },
+        reOrderLayers(oldIndex, newIndex) {
+            if (oldIndex > newIndex) {
+                this.layers.splice(newIndex, 0, this.layers[oldIndex])
+                this.layers.splice(oldIndex + 1, 1)
+            }
+            else {
+                this.layers.splice(newIndex + 1, 0, this.layers[oldIndex])
+                this.layers.splice(oldIndex, 1)
+            }
+
+            this.reIndexLayer()
+        },
+        reIndexLayer() {
+            this.layers = this.layers.map((layer, index) => {
+                layer.zIndex = this.layers.length - index
+                return layer
+            })
+        },
+        handleDragChange() {
+            this.selectedShapeName = '';
+            const transformerNode = this.$refs.transformer.getNode();
+            const stage = transformerNode.getStage();
+
+            this.layers = this.layers.map((layer, index) => {
+                layer.zIndex = (index + 1)
+                const selectedNode = stage.findOne('.' + layer.name);
+
+                this.handleTransformEnd({ target: selectedNode, attrs: { name: layer.name } })
+                return layer
+            })
+        },
         updateValueColor(e) {
             this.colors.hex = e.hex
             if (this.selecteditem != null) {
                 this.layers[this.index_layer_selected].fill = e.hex
             }
         },
+
         clickSelectLayerItem(name, index) {
+
             this.selectedShapeName = name
-            const rect = this.layers.find((r) => r.name === name);
-            this.selecteditem = rect
+            // const rect = this.layers.find((r) => r.name === name);
+            // this.selecteditem = rect
             this.index_layer_selected = index
             this.active_layer_action(this.selectedShapeName)
             this.updateTransformer();
 
+        },
+        clickUnSelectLayerItem() {
+            this.selectedShapeName = '';
+            this.selecteditem = null
+            this.updateTransformer();
+            return;
         },
         handleContentMenu(e) {
             if (e.evt != undefined) {
@@ -249,72 +347,158 @@ export default {
             var MIN_WIDTH = 20
             e.target.setAttrs({
                 width: Math.max(e.target.width() * e.target.scaleX(), MIN_WIDTH),
-                height: e.target.height()*e.target.scaleY(),
+                height: e.target.height() * e.target.scaleY(),
                 scaleX: 1,
                 scaleY: 1,
             });
         },
         handleTransformEnd(e) {
 
-            // shape is transformed, let us save new attrs back to the node
             // find element in our state
+
             const rect = this.layers.find(
-                (r) => r.name === this.selectedShapeName
+                (r) => r.name == e.target.attrs.name
             );
+            const find_index = this.layers.findIndex(
+                (r) => r.name == e.target.attrs.name
+            );
+            if (rect && find_index >= 0) {
 
-            // update the state
-            rect.x = e.target.x();
-            rect.y = e.target.y();
-            rect.rotation = e.target.rotation();
 
-            rect.scaleX = e.target.scaleX();
-            rect.scaleY = e.target.scaleY();
-            rect.width = e.target.width()
-            rect.height = e.target.height()
+                // update the state
+                rect.x = e.target.x();
+                rect.y = e.target.y();
+                rect.rotation = e.target.rotation();
 
-            console.log(e.target);
-            this.layers[this.index_layer_selected] = rect
-            // change fill
-            // rect.fill = this.colors.hex
+                rect.scaleX = e.target.scaleX();
+                rect.scaleY = e.target.scaleY();
+                rect.width = e.target.width()
+                rect.height = e.target.height()
+                rect.name = e.target.name()
+
+                this.layers[find_index] = rect
+                // change fill
+            } else {
+                console.log(376, "rect undfind", e.target.attrs.name, this.layers.map(x => ({ name: x.name, display: x.name_display })));
+            }
+
+
         },
 
         handleStageMouseDown(e) {
             // clicked on stage - clear selection
+            var selectionRectangle = this.$refs.selection_rectangle.getNode()
             if (e.target === e.target.getStage()) {
                 this.selectedShapeName = '';
                 this.updateTransformer();
+                this.clickSelectLayerItem()
+                x1 = e.target.getStage().getPointerPosition().x;
+                y1 = e.target.getStage().getPointerPosition().y;
+                x2 = e.target.getStage().getPointerPosition().x;
+                y2 = e.target.getStage().getPointerPosition().y;
+
+
+
+
+                selectionRectangle.visible(true);
+                selectionRectangle.width(0);
+                selectionRectangle.height(0);
+
                 return;
             }
 
-            // clicked on transformer - do nothing
-            const clickedOnTransformer =
-                e.target.getParent().className === 'Transformer';
-            if (clickedOnTransformer) {
-                return;
-            }
+            console.log(selectionRectangle.visible(),);
 
-            // find clicked rect by its name
-
-            const name = e.target.name();
-
-            const rect = this.layers.find((r) => r.name === name);
-            if (rect) {
-                this.selectedShapeName = name;
-                this.index_layer_selected = this.layers.findIndex((r) => r.name === name);
-                // update color picker
-                this.colors.hex = rect.fill
-                this.selecteditem = rect
-                this.active_layer_action(this.selectedShapeName)
-
-
+            if (selectionRectangle.visible()) {
+                return
             } else {
-                this.selectedShapeName = '';
+                // clicked on transformer - do nothing
+                if (this.selectedShapeNameMulti.length == 0) {
+                    if (e.target.getParent()) {
+                        const clickedOnTransformer = e.target.getParent().className === 'Transformer';
+                        if (clickedOnTransformer) {
+                            return;
+                        }
+                    }
+
+
+                    // find clicked rect by its name
+
+                    const name = e.target.name();
+
+                    const rect = this.layers.find((r) => r.name === name);
+                    if (rect) {
+                        this.selectedShapeName = name;
+                        this.index_layer_selected = this.layers.findIndex((r) => r.name === name);
+                        // update color picker
+                        this.colors.hex = rect.fill
+                        this.selecteditem = rect
+                        this.active_layer_action(this.selectedShapeName)
+
+
+                    } else {
+                        this.selectedShapeName = '';
+                    }
+                    this.updateTransformer();
+                }
+
             }
-            this.updateTransformer();
+
+
+        },
+        handleStageMouseMove(e) {
+            var selectionRectangle = this.$refs.selection_rectangle.getNode()
+            if (!selectionRectangle.visible()) {
+                return
+            }
+
+            e.evt.preventDefault();
+            x2 = selectionRectangle.getStage().getPointerPosition().x;
+            y2 = selectionRectangle.getStage().getPointerPosition().y;
+
+            selectionRectangle.setAttrs({
+                x: Math.min(x1, x2),
+                y: Math.min(y1, y2),
+                width: Math.abs(x2 - x1),
+                height: Math.abs(y2 - y1),
+            });
+        },
+        handleStageMouseUp(e) {
+
+            var selectionRectangle = this.$refs.selection_rectangle.getNode()
+            if (!selectionRectangle.visible()) {
+                return;
+            }
+            var stage = selectionRectangle.getStage()
+            e.evt.preventDefault();
+            // update visibility in timeout, so we can check it in click event
+            setTimeout(() => {
+                selectionRectangle.visible(false);
+            });
+
+
+            setTimeout(() => {
+                var shapes = this.layers.map((layer) => {
+                    return stage.findOne('.' + layer.name);
+                });
+
+
+
+                var box = selectionRectangle.getClientRect();
+                var selected = shapes.filter((shape) =>
+                    Konva.Util.haveIntersection(box, shape.getClientRect())
+                )
+                const transformerNode = this.$refs.transformer.getNode();
+                transformerNode.nodes(selected);
+                this.selectedShapeNameMulti = selected.map(x => x.attrs.name)
+            }, 1);
+
+
         },
         handleClick(e) {
+            // console.log(e.target.zIndex());
+
             if (e.evt.button == const_data.CLICK_RIGHT) {
-                console.log(e.evt);
                 this.context_menu_object_open = true
                 this.$refs.context_menu_object.style
                 this.$refs.context_menu_object.style.top = `${e.evt.y}px`
@@ -323,13 +507,153 @@ export default {
             e.evt.preventDefault();
 
         },
+        handleEditText() {
+
+
+            const transformerNode = this.$refs.transformer.getNode();
+            const stage = transformerNode.getStage();
+            const selectedNode = stage.findOne('.' + this.selectedShapeName);
+            transformerNode.hide()
+            selectedNode.hide()
+
+            // create textarea over canvas with absolute position
+            // first we need to find position for textarea
+            // how to find it?
+
+            // at first lets find position of text node relative to the stage:
+            var textPosition = selectedNode.absolutePosition();
+
+            // so position of textarea will be the sum of positions above:
+            var areaPosition = {
+                x: stage.container().offsetLeft + textPosition.x,
+                y: stage.container().offsetTop + textPosition.y,
+            };
+
+            // create textarea and style it
+            var textarea = document.createElement('textarea');
+            // document.body.appendChild(textarea);
+            var container_canvas = document.getElementById("canvas-wrap")
+            container_canvas.appendChild(textarea)
+
+            // apply many styles to match text on canvas as close as possible
+            // remember that text rendering on canvas and on the textarea can be different
+            // and sometimes it is hard to make it 100% the same. But we will try...
+            textarea.value = selectedNode.text();
+            textarea.style.position = 'absolute';
+            textarea.style.top = areaPosition.y + 'px';
+            textarea.style.left = areaPosition.x + 'px';
+            textarea.style.width = selectedNode.width() - selectedNode.padding() * 2 + 'px';
+            textarea.style.height =
+                selectedNode.height() - selectedNode.padding() * 2 + 5 + 'px';
+            textarea.style.fontSize = selectedNode.fontSize() + 'px';
+            textarea.style.border = 'none';
+            textarea.style.padding = '0px';
+            textarea.style.margin = '0px';
+            textarea.style.overflow = 'hidden';
+            textarea.style.background = 'none';
+            textarea.style.outline = 'none';
+            textarea.style.resize = 'none';
+            textarea.style.lineHeight = selectedNode.lineHeight();
+            textarea.style.fontFamily = selectedNode.fontFamily();
+            textarea.style.transformOrigin = 'left top';
+            textarea.style.textAlign = selectedNode.align();
+            textarea.style.color = selectedNode.fill();
+            var rotation = selectedNode.rotation();
+            var transform = '';
+            if (rotation) {
+                transform += 'rotateZ(' + rotation + 'deg)';
+            }
+
+            var px = 0;
+            // also we need to slightly move textarea on firefox
+            // because it jumps a bit
+            var isFirefox =
+                navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+            if (isFirefox) {
+                px += 2 + Math.round(selectedNode.fontSize() / 20);
+            }
+            transform += 'translateY(-' + px + 'px)';
+
+            textarea.style.transform = transform;
+
+            // reset height
+            textarea.style.height = 'auto';
+            // after browsers resized it we can set actual value
+            textarea.style.height = textarea.scrollHeight + 3 + 'px';
+
+            textarea.focus();
+
+            function removeTextarea() {
+                textarea.parentNode.removeChild(textarea);
+                window.removeEventListener('click', handleOutsideClick);
+                selectedNode.show();
+                transformerNode.show();
+                transformerNode.forceUpdate();
+            }
+
+            function setTextareaWidth(newWidth) {
+                if (!newWidth) {
+                    // set width for placeholder
+                    newWidth = selectedNode.placeholder.length * selectedNode.fontSize();
+                }
+                // some extra fixes on different browsers
+                var isSafari = /^((?!chrome|android).)*safari/i.test(
+                    navigator.userAgent
+                );
+                var isFirefox =
+                    navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+                if (isSafari || isFirefox) {
+                    newWidth = Math.ceil(newWidth);
+                }
+
+                var isEdge =
+                    document.documentMode || /Edge/.test(navigator.userAgent);
+                if (isEdge) {
+                    newWidth += 1;
+                }
+                textarea.style.width = newWidth + 'px';
+            }
+
+            textarea.addEventListener('keydown', function (e) {
+                // hide on enter
+                // but don't hide on shift + enter
+                if (e.keyCode === 13 && !e.shiftKey) {
+                    selectedNode.text(textarea.value);
+                    removeTextarea();
+                }
+                // on esc do not set value back to node
+                if (e.keyCode === 27) {
+                    removeTextarea();
+                }
+            });
+
+            textarea.addEventListener('keydown', function () {
+                var scale = selectedNode.getAbsoluteScale().x;
+                setTextareaWidth(selectedNode.width() * scale);
+                textarea.style.height = 'auto';
+                textarea.style.height =
+                    textarea.scrollHeight + selectedNode.fontSize() + 'px';
+            });
+
+            function handleOutsideClick(e) {
+                if (e.target !== textarea) {
+                    selectedNode.text(textarea.value);
+                    removeTextarea();
+                }
+            }
+            setTimeout(() => {
+                window.addEventListener('click', handleOutsideClick);
+            });
+        },
         active_layer_action(name) {
             var el_layer = document.getElementsByClassName("layer-item")
             for (var i = 0; i < el_layer.length; i++) {
                 el_layer[i].classList.remove("layer-item-active")
             }
+            if (this.$refs[name]) {
+                this.$refs[name][0].classList.add("layer-item-active")
+            }
 
-            this.$refs[name][0].classList.add("layer-item-active")
         },
         updateTransformer() {
             // here we need to manually attach or detach Transformer node
@@ -379,16 +703,16 @@ export default {
             console.log(this.colors);
             switch (menu_type) {
                 case "text": {
-                    this.layers.push({
+                    this.layers.unshift({
                         type: "text",
                         disable: false,
                         name_edit: false,
                         rotation: 0,
                         x: 150,
                         y: 150,
-                        text: "samplesadasdasfasgas asfasfasd assad",
+                        text: "Text",
                         fontSize: 32,
-                        width: 300,
+                        width: 100,
                         height: 100,
                         scaleX: 1,
                         scaleY: 1,
@@ -396,11 +720,12 @@ export default {
                         name: uuidv4(),
                         name_display: "text",
                         draggable: true,
+                        zIndex: this.layers.length
                     })
                     break;
                 }
                 case "rect": {
-                    this.layers.push({
+                    this.layers.unshift({
                         type: "rect",
                         disable: false,
                         name_edit: false,
@@ -415,11 +740,12 @@ export default {
                         name: uuidv4(),
                         name_display: "rect",
                         draggable: true,
+                        zIndex: this.layers.length
                     })
                     break;
                 }
                 case "circle": {
-                    this.layers.push({
+                    this.layers.unshift({
                         type: "circle",
                         disable: false,
                         name_edit: false,
@@ -434,11 +760,12 @@ export default {
                         name: uuidv4(),
                         name_display: "circle",
                         draggable: true,
+                        zIndex: this.layers.length
                     })
                     break;
                 }
                 case "triangular": {
-                    this.layers.push({
+                    this.layers.unshift({
                         type: "regular-polygon",
                         disable: false,
                         name_edit: false,
@@ -452,6 +779,7 @@ export default {
                         name: uuidv4(),
                         name_display: "regular-polygon",
                         draggable: true,
+                        zIndex: this.layers.length
                     })
                     break;
                 }
@@ -462,7 +790,9 @@ export default {
                 default:
                     break;
             }
-            this.drawObject()
+
+
+
         },
         drawGrid() {
             //console.log(this.$refs.canvas);
@@ -509,10 +839,13 @@ export default {
     watch: {
         layers: {
             handler: function () {
-                this.drawObject()
+
             },
             deep: true
         }
+    },
+    computed: {
+
     }
 
 }
