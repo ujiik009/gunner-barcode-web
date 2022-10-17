@@ -37,7 +37,11 @@
                 <chrome-picker style="width:200px" :value="colors.hex" @input="updateValueColor" />
             </div>
             <div id="layers">
-                <div id="layer-title">Layers ({{layers.length}})</div>
+                <div id="layer-title"><span style="margin-right: 5px;">Layers</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-layers" viewBox="0 0 16 16">
+                        <path
+                            d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0l3.515-1.874zM8 9.433 1.562 6 8 2.567 14.438 6 8 9.433z" />
+                    </svg> </div>
                 <div id="layers-body">
 
                     <div :class="{disable:layer.disable,'layer-item':true}" v-for="(layer,index) in layers"
@@ -59,11 +63,15 @@
                                 d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
                         </svg>
                         <span @dblclick="layer.name_edit = true" v-if="layer.name_edit == false">{{layer.name_display}}
-                            {{layer.zIndex}}</span>
+                        </span>
                         <input class="change_name_input" v-else v-model="layer.name_display"
                             @blur="layer.name_edit = false" />
                     </div>
                 </div>
+            </div>
+            <div id="edit_shape_component" v-if="index_layer_selected>=0">
+                <EditShapeText @change="handleChangeEditShape" v-if="selecteditem.type == 'text' && renderComponent"
+                    :data="selecteditem" />
             </div>
             <!-- {{context_menu_layer_open}} -->
             <div id="context-menu-layer" ref="context_menu_layer" v-show="context_menu_layer_open == true"
@@ -198,7 +206,7 @@ import { Chrome } from 'vue-color'
 import ClickOutside from 'vue-click-outside'
 import { v4 as uuidv4 } from 'uuid';
 import Konva from "konva"
-
+import EditShapeText from "./StickerDesignComponent/EditShapeText.vue"
 var const_data = {
     CLICK_LEFT: 0,
     CLICK_RIGHT: 2
@@ -217,13 +225,14 @@ function getPosition(el) {
 export default {
     components: {
         'chrome-picker': Chrome,
-
+        EditShapeText
     },
     mounted() {
         this.drawGrid()
     },
     data() {
         return {
+            renderComponent: true,
             configKonva: {
 
                 width: 1000,
@@ -292,6 +301,16 @@ export default {
         ClickOutside
     },
     methods: {
+        async forceRerender() {
+            // Remove MyComponent from the DOM
+            this.renderComponent = false;
+
+            // Wait for the change to get flushed to the DOM
+            await this.$nextTick();
+
+            // Add the component back in
+            this.renderComponent = true;
+        },
         SendBackLayer() {
 
             this.reOrderLayers(this.index_layer_selected, this.layers.length - 1)
@@ -334,6 +353,16 @@ export default {
                 return layer
             })
         },
+        handleChangeEditShape(shape_config) {
+            var find_index = this.layers.findIndex(x => x.name == shape_config.name)
+            this.layers[find_index] = shape_config
+
+
+            this.clickUnSelectLayerItem()
+            this.clickSelectLayerItem(shape_config.name)
+
+
+        },
         handleDragChange() {
             this.selectedShapeName = '';
             const transformerNode = this.$refs.transformer.getNode();
@@ -354,12 +383,14 @@ export default {
             }
         },
 
-        clickSelectLayerItem(name, index) {
+        clickSelectLayerItem(name, index = undefined) {
 
             this.selectedShapeName = name
-            // const rect = this.layers.find((r) => r.name === name);
-            // this.selecteditem = rect
+            if (index == undefined) {
+                index = this.layers.findIndex(x => x.name == name)
+            }
             this.index_layer_selected = index
+            this.selecteditem = this.layers[index]
             this.active_layer_action(this.selectedShapeName)
             this.updateTransformer();
 
@@ -367,6 +398,7 @@ export default {
         clickUnSelectLayerItem() {
             this.selectedShapeName = '';
             this.selecteditem = null
+            this.index_layer_selected = -1
             this.updateTransformer();
             return;
         },
@@ -411,6 +443,8 @@ export default {
                 rect.height = e.target.height()
                 rect.name = e.target.name()
                 this.layers[find_index] = rect
+                this.selecteditem = rect
+                this.forceRerender()
                 // change fill
             } else {
                 console.log(376, "rect undfind", e.target.attrs.name, this.layers.map(x => ({ name: x.name, display: x.name_display })));
@@ -424,6 +458,7 @@ export default {
             var selectionRectangle = this.$refs.selection_rectangle.getNode()
             if (e.target === e.target.getStage()) {
                 this.selectedShapeName = '';
+                this.clickUnSelectLayerItem()
                 this.updateTransformer();
                 this.clickSelectLayerItem()
                 x1 = e.target.getStage().getPointerPosition().x;
@@ -442,7 +477,7 @@ export default {
             }
 
             var rect = this.layers.find(x => x.name == e.target.attrs.name)
-           
+
             if (selectionRectangle.visible()) {
                 return
             } else {
@@ -544,7 +579,7 @@ export default {
         },
         handleEditText() {
 
-
+            console.log("handleEditText", this.selectedShapeName);
             const transformerNode = this.$refs.transformer.getNode();
             const stage = transformerNode.getStage();
             const selectedNode = stage.findOne('.' + this.selectedShapeName);
@@ -618,6 +653,15 @@ export default {
 
             textarea.focus();
 
+            var save_stage = (text, name) => {
+
+                var find_index = this.layers.findIndex(x => x.name == name)
+                this.layers[find_index].text = text
+                this.selecteditem = this.layers[find_index]
+                this.forceRerender()
+            }
+
+
             function removeTextarea() {
                 textarea.parentNode.removeChild(textarea);
                 window.removeEventListener('click', handleOutsideClick);
@@ -654,6 +698,7 @@ export default {
                 // but don't hide on shift + enter
                 if (e.keyCode === 13 && !e.shiftKey) {
                     selectedNode.text(textarea.value);
+                    save_stage(textarea.value, selectedNode.attrs.name)
                     removeTextarea();
                 }
                 // on esc do not set value back to node
@@ -671,8 +716,11 @@ export default {
             });
 
             function handleOutsideClick(e) {
+                console.log("handleOutsideClick");
                 if (e.target !== textarea) {
+                    console.log("selectedNode", selectedNode);
                     selectedNode.text(textarea.value);
+                    save_stage(textarea.value, selectedNode.attrs.name)
                     removeTextarea();
                 }
             }
@@ -729,14 +777,18 @@ export default {
 
         delete_layer() {
             this.layers = this.layers.filter((x, index) => index != this.index_layer_selected)
+            this.clickUnSelectLayerItem()
             this.hide_context_menu_layer()
+            this.hide_context_menu_object()
         },
         hidden_layer() {
             this.layers[this.index_layer_selected].disable = true
         },
         menu_action(menu_type) {
-            console.log(this.colors);
+            this.clickUnSelectLayerItem()
+            var name = uuidv4()
             switch (menu_type) {
+
                 case "text": {
                     this.layers.unshift({
                         type: "text",
@@ -746,17 +798,22 @@ export default {
                         x: 150,
                         y: 150,
                         text: "Text",
+                        fontFamily: "Prompt",
                         fontSize: 32,
                         width: 100,
                         height: 100,
                         scaleX: 1,
                         scaleY: 1,
                         fill: this.colors.hex,
-                        name: uuidv4(),
+                        name,
                         name_display: "text",
                         draggable: true,
                         zIndex: this.layers.length
                     })
+                    setTimeout(() => {
+                        this.clickSelectLayerItem(name)
+                    }, 100)
+
                     break;
                 }
                 case "rect": {
@@ -772,11 +829,14 @@ export default {
                         scaleX: 1,
                         scaleY: 1,
                         fill: this.colors.hex,
-                        name: uuidv4(),
+                        name,
                         name_display: "rect",
                         draggable: true,
                         zIndex: this.layers.length
                     })
+                    setTimeout(() => {
+                        this.clickSelectLayerItem(name)
+                    }, 100)
                     break;
                 }
                 case "circle": {
@@ -792,11 +852,14 @@ export default {
                         scaleX: 1,
                         scaleY: 1,
                         fill: this.colors.hex,
-                        name: uuidv4(),
+                        name,
                         name_display: "circle",
                         draggable: true,
                         zIndex: this.layers.length
                     })
+                    setTimeout(() => {
+                        this.clickSelectLayerItem(name)
+                    }, 100)
                     break;
                 }
                 case "triangular": {
@@ -811,10 +874,13 @@ export default {
                         fill: this.colors.hex,
                         scaleX: 1,
                         scaleY: 1,
-                        name: uuidv4(),
+                        name,
                         name_display: "regular-polygon",
                         draggable: true,
                         zIndex: this.layers.length
+                    })
+                    setTimeout(() => {
+                        this.clickSelectLayerItem(name)
                     })
                     break;
                 }
@@ -917,6 +983,17 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
+#edit_shape_component {
+    position: absolute;
+    top: 500px;
+    right: 20px;
+    width: 200px;
+    min-height: 200px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+
 
 #layers>#layers-body {
 
@@ -926,8 +1003,13 @@ export default {
 
 #layers>#layer-title {
     /* height: 20px; */
-    font-weight: 500;
     padding: 5px 10px 5px 10px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 1px solid #ccc;
 }
 
 #layers-body>.disable {
@@ -1036,8 +1118,6 @@ canvas {
     background-color: rgb(255, 255, 255);
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
-
-
 
 #context-menu-layer,
 #context-menu-object>div {

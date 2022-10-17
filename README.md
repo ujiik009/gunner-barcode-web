@@ -32,3 +32,47 @@ https://konvajs.org/docs/vue/index.html
 
 ## canvase tranform
 https://konvajs.org/docs/vue/Transformer.html
+
+## font support
+
+Prompt <link
+      href="https://fonts.googleapis.com/css?family=Prompt:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+Kanit <link
+      href="https://fonts.googleapis.com/css?family=Kanit:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+
+
+Sarabun <link
+      href="https://fonts.googleapis.com/css?family=Sarabun:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+Mali <link
+      href="https://fonts.googleapis.com/css?family=Mali:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+Mitr <link
+      href="https://fonts.googleapis.com/css?family=Mitr:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+Sriracha <link
+      href="https://fonts.googleapis.com/css?family=Sriracha:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+Charm <link
+      href="https://fonts.googleapis.com/css?family=Charm:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+
+Chonburi <link
+      href="https://fonts.googleapis.com/css?family=Chonburi:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
