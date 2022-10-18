@@ -36,13 +36,20 @@
             <div id="color-picker">
                 <chrome-picker style="width:200px" :value="colors.hex" @input="updateValueColor" />
             </div>
-            <div id="layers">
-                <div id="layer-title"><span style="margin-right: 5px;">Layers</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        fill="currentColor" class="bi bi-layers" viewBox="0 0 16 16">
+            <div id="layers" :class="{expand_layer:!expand_layer}">
+                <div id="layer-title"><span style="margin-right: 5px;">Layers</span><svg
+                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-layers" viewBox="0 0 16 16">
                         <path
                             d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0l3.515-1.874zM8 9.433 1.562 6 8 2.567 14.438 6 8 9.433z" />
-                    </svg> </div>
-                <div id="layers-body">
+                    </svg>
+                    <div style="display: inline;width: 57%;text-align: right;">
+                        <b-icon v-if="expand_layer" icon="caret-up-fill" @click="expand_layer = false"></b-icon>
+                        <b-icon v-else icon="caret-down-fill" @click="expand_layer = true"></b-icon>
+
+                    </div>
+                </div>
+                <div id="layers-body" v-if="expand_layer">
 
                     <div :class="{disable:layer.disable,'layer-item':true}" v-for="(layer,index) in layers"
                         :key="layer.name" :ref="layer.name" @contextmenu="context_menu_layer(index,$event)"
@@ -69,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <div id="edit_shape_component" v-if="index_layer_selected>=0">
+            <div id="edit_shape_component" v-if="index_layer_selected>=0" :class="{'set-bottom-layer':!expand_layer}">
                 <EditShapeText @change="handleChangeEditShape" v-if="selecteditem.type == 'text' && renderComponent"
                     :data="selecteditem" />
             </div>
@@ -192,7 +199,12 @@
 
             </div>
         </div>
+        <b-modal ref="modal-upload-image" header-close-content :title="`Upload your sticker`" size="lg">
+            <div>
 
+
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
@@ -233,6 +245,7 @@ export default {
     data() {
         return {
             renderComponent: true,
+            expand_layer: true,
             configKonva: {
 
                 width: 1000,
@@ -250,6 +263,19 @@ export default {
             context_menu_layer_open: false,
             context_menu_object_open: false,
             panels_menu: [
+                {
+                    type: "image",
+                    icon_svg: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>',
+                    sub_menu_open: false,
+                    sub_menu: [
+                        {
+                            type: "image",
+                            icon_svg: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16"><path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/><path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/></svg>'
+                        }
+
+                    ]
+
+                },
                 {
                     type: "text",
                     icon_svg: '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-fonts" viewBox="0 0 16 16"><path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479L12.258 3z"/></svg>',
@@ -384,13 +410,14 @@ export default {
         },
 
         clickSelectLayerItem(name, index = undefined) {
-
+            console.log("clickSelectLayerItem");
             this.selectedShapeName = name
             if (index == undefined) {
                 index = this.layers.findIndex(x => x.name == name)
             }
             this.index_layer_selected = index
             this.selecteditem = this.layers[index]
+            console.log(this.selecteditem.x, this.selecteditem.y);
             this.active_layer_action(this.selectedShapeName)
             this.updateTransformer();
 
@@ -460,7 +487,7 @@ export default {
                 this.selectedShapeName = '';
                 this.clickUnSelectLayerItem()
                 this.updateTransformer();
-                this.clickSelectLayerItem()
+                //this.clickSelectLayerItem()
                 x1 = e.target.getStage().getPointerPosition().x;
                 y1 = e.target.getStage().getPointerPosition().y;
                 x2 = e.target.getStage().getPointerPosition().x;
@@ -884,7 +911,10 @@ export default {
                     })
                     break;
                 }
-
+                case "image": {
+                    this.$refs['modal-upload-image'].show()
+                    break;
+                }
                 case "undo": {
                     break;
                 }
@@ -975,17 +1005,18 @@ export default {
 #layers {
     /* padding: 10px; */
     position: absolute;
-    top: 280px;
+    top: 260px;
     right: 20px;
     width: 200px;
     height: 200px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    transition: height 0.2s !important;
 }
 
 #edit_shape_component {
     position: absolute;
-    top: 500px;
+    top: 470px;
     right: 20px;
     width: 200px;
     min-height: 200px;
@@ -999,6 +1030,7 @@ export default {
 
     max-height: 170px;
     overflow-y: auto;
+
 }
 
 #layers>#layer-title {
@@ -1026,6 +1058,15 @@ export default {
     display: flex;
     align-items: center;
 
+}
+
+.expand_layer {
+
+    height: 35px !important;
+}
+
+.set-bottom-layer {
+    top: 305px !important;
 }
 
 .layer-item>* {
@@ -1070,7 +1111,7 @@ canvas {
 
 #panal-body {
     /* position: relative; */
-    height: 126px;
+    min-height: 126px;
     width: 50px;
 }
 
@@ -1128,5 +1169,11 @@ canvas {
 
 .context_menu_item:hover {
     border: 0.5px solid rgb(156, 210, 255);
+}
+</style>
+
+<style>
+button.close {
+    display: none !important;
 }
 </style>

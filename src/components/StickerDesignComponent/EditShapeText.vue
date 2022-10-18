@@ -71,8 +71,9 @@
                         @keyup="updateData" />
                 </div>
                 <div class="form-group">
-                    <label for="padding">Opacity</label>
-                    <input type="range" class="form-range" id="customRange1" min="0" max="1" step="0.01"  v-model="shape_config.opacity" @change="updateData">
+                    <label for="customRange1">Opacity</label>
+                    <input type="range" class="form-range" id="customRange1" min="0" max="1" step="0.01"
+                        v-model="shape_config.opacity" @change="updateData">
                 </div>
             </form>
 
@@ -115,7 +116,7 @@ export default {
                 fontSize: 10,
                 fontStyle: "normal",
                 stroke: "",
-                strokeWidth: 1,
+                strokeWidth: 0,
                 opacity: 1,
                 ...this.value
             },
@@ -141,6 +142,10 @@ export default {
 </script>
 
 <style scoped>
+.form-control{
+    height: 30px;
+    font-size: 13px;
+}
 #title {
     padding: 5px 10px 5px 10px;
     height: 35px;
