@@ -66,6 +66,16 @@
                         @keyup="updateData" />
                 </div>
                 <div class="form-group">
+                    <label for="stroke_color">Stroke Color</label>
+                    <input type="color" class="form-control" id="stroke_color" v-model="shape_config.stroke"
+                        @change="updateData">
+                </div>
+                <div class="form-group">
+                    <label for="StrokeWidth">Stroke Width</label>
+                    <input type="range" class="form-range" id="StrokeWidth" min="0" max="15" step="0.01"
+                        v-model="shape_config.strokeWidth" @change="updateData">
+                </div>
+                <div class="form-group">
                     <label for="padding">Padding</label>
                     <input type="number" class="form-control" id="padding" v-model="shape_config.padding"
                         @keyup="updateData" />
@@ -90,8 +100,9 @@ export default {
     },
     methods: {
         updateData() {
-            console.log("updateData", this.shape_config.align);
-
+            this.shape_config.cornerRadius = Number(this.shape_config.cornerRadius)
+            this.shape_config.strokeWidth = Number(this.shape_config.strokeWidth)
+            this.shape_config.padding = Number(this.shape_config.padding)
             this.$emit('change', {
                 ...this.shape_config
             })
@@ -142,10 +153,11 @@ export default {
 </script>
 
 <style scoped>
-.form-control{
+.form-control {
     height: 30px;
     font-size: 13px;
 }
+
 #title {
     padding: 5px 10px 5px 10px;
     height: 35px;

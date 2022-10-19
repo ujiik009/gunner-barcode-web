@@ -1,5 +1,6 @@
 <template>
     <div id="container-canvas">
+        
         <div id="canvas-wrap" @mousemove="updateCoordinates">
             <canvas width="1000" height="1000" ref="canvas" id="canvas" @load="drawGrid">
 
@@ -12,18 +13,17 @@
                         :config="{borderDash: [4, 3],padding:10,anchorFill:'#fd7e14',anchorCornerRadius: 5,borderStroke:'#fd7e14',anchorStroke:'#fd7e14'}" />
                     <div v-for="item in layers" :key="item.name">
                         <div v-switch="item.type">
-                            <v-text class="shape" v-if="!item.disable  && item.type == 'text'" :config="item"
+                            <v-text class="shape" v-if=" item.type == 'text'" :config="item"
                                 @transform="handleTransform" @transformend="handleTransformEnd"
                                 @dragend="handleTransformEnd" @click="handleClick" @dblclick="handleEditText"
                                 @dbtap="handleEditText" />
-                            <v-rect class="shape" v-if="!item.disable && item.type == 'rectangle'" :config="item"
+                            <v-rect class="shape" v-if=" item.type == 'rectangle'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
-                            <v-circle class="shape" v-if="!item.disable  && item.type == 'circle'" :config="item"
+                            <v-circle class="shape" v-if="item.type == 'circle'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
-                            <v-regular-polygon class="shape" v-if="!item.disable  && item.type == 'regular-polygon'"
-                                :config="item" @transformend="handleTransformEnd" @dragend="handleTransformEnd"
-                                @click="handleClick" />
-                            <v-image class="shape" v-if="!item.disable && item.type == 'image'" :config="item"
+                            <v-regular-polygon class="shape" v-if=" item.type == 'triangular'" :config="item"
+                                @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
+                            <v-image class="shape" v-if=" item.type == 'image'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
                         </div>
 
@@ -47,24 +47,26 @@
                             d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0l3.515-1.874zM8 9.433 1.562 6 8 2.567 14.438 6 8 9.433z" />
                     </svg>
                     <div style="display: inline;width: 57%;text-align: right;">
-                        <b-icon v-if="expand_layer" icon="caret-up-fill" @click="expand_layer = false"></b-icon>
-                        <b-icon v-else icon="caret-down-fill" @click="expand_layer = true"></b-icon>
+                        <b-icon style="cursor: pointer;" v-if="expand_layer" icon="caret-up-fill"
+                            @click="expand_layer = false"></b-icon>
+                        <b-icon style="cursor: pointer;" v-else icon="caret-down-fill" @click="expand_layer = true">
+                        </b-icon>
 
                     </div>
                 </div>
                 <div id="layers-body" v-if="expand_layer">
 
-                    <div :class="{disable:layer.disable,'layer-item':true}" v-for="(layer,index) in layers"
+                    <div :class="{visible:!layer.visible,'layer-item':true}" v-for="(layer,index) in layers"
                         :key="layer.name" :ref="layer.name" @contextmenu="context_menu_layer(index,$event)"
                         @click="clickSelectLayerItem(layer.name,index)">
-                        <svg style="cursor: pointer" @click="layer.disable = !layer.disable" v-if="layer.disable==false"
+                        <svg style="cursor: pointer" @click="layer.visible = !layer.visible" v-if="layer.visible==true"
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-eye-fill" viewBox="0 0 16 16">
                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                             <path
                                 d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
                         </svg>
-                        <svg style="cursor: pointer" @click="layer.disable = !layer.disable" v-else
+                        <svg style="cursor: pointer" @click="layer.visible = !layer.visible" v-else
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-eye-slash-fill" viewBox="0 0 16 16">
                             <path
@@ -293,7 +295,8 @@ export default {
     },
     data() {
         return {
-            file_input: null,
+
+            history: [],
             renderComponent: true,
             expand_layer: true,
             configKonva: {
@@ -377,6 +380,25 @@ export default {
         ClickOutside
     },
     methods: {
+        undo() {
+            var length_history = this.history.length - 2
+            var last_history = this.history[length_history]
+            if (last_history) {
+                this.layers = [...last_history]
+                console.log("undo", length_history, this.history.length);
+                this.history.length = length_history + 1
+                this.$forceUpdate();
+            }
+
+
+        },
+        save_history() {
+            setTimeout(() => {
+                this.history.push([...this.layers])
+            }, 100);
+
+            console.log("save history", this.history.length, "records");
+        },
         exportImage() {
             const transformerNode = this.$refs.transformer.getNode();
             var group = new Konva.Group();
@@ -385,11 +407,9 @@ export default {
             }).reverse().map((shape) => { group.add(shape) })
             const uri = group.toDataURL({ pixelRatio: 3 });
             downloadURI(uri, "make-by-gunner-barcode-design.png")
-
-            console.log(transformerNode.getStage());
         },
         showButtonExport(open) {
-            
+
             if (open == true) {
                 this.$refs["btn-export"].style.display = "block"
             } else {
@@ -411,6 +431,7 @@ export default {
 
                 setTimeout(() => {
                     this.clickSelectLayerItem(data.name)
+                    this.save_history()
                 }, 100)
             }
 
@@ -429,7 +450,7 @@ export default {
                 var name = uuidv4()
                 push_image_to_layer({
                     type: "image",
-                    disable: false,
+                    visible: true,
                     name_edit: false,
                     rotation: 0,
                     x: 50,
@@ -477,7 +498,7 @@ export default {
         },
         duplicate_shape() {
             if (this.index_layer_selected >= 0) {
-                var shape_data = {...this.layers[this.index_layer_selected]}
+                var shape_data = { ...this.layers[this.index_layer_selected] }
                 shape_data.x += 20
                 shape_data.y += 20
                 shape_data.name = uuidv4()
@@ -486,7 +507,7 @@ export default {
 
                 setTimeout(() => {
                     this.clickSelectLayerItem(shape_data.name)
-                },20)
+                }, 20)
             }
 
         },
@@ -515,7 +536,7 @@ export default {
         },
         handleChangeEditShape(shape_config) {
             var find_index = this.layers.findIndex(x => x.name == shape_config.name)
-            this.layers[find_index] = shape_config
+            this.layers[find_index] = { ...shape_config }
 
 
             this.clickUnSelectLayerItem()
@@ -551,7 +572,7 @@ export default {
             }
             this.index_layer_selected = index
             this.selecteditem = this.layers[index]
-            
+
             this.active_layer_action(this.selectedShapeName)
             this.updateTransformer();
 
@@ -584,7 +605,7 @@ export default {
         handleTransformEnd(e) {
 
             // find element in our state
-
+            console.log("handleTransformEnd");
             const rect = this.layers.find(
                 (r) => r.name == e.target.attrs.name
             );
@@ -604,9 +625,10 @@ export default {
                 rect.width = e.target.width()
                 rect.height = e.target.height()
                 rect.name = e.target.name()
-                this.layers[find_index] = rect
-                this.selecteditem = rect
+                this.layers[find_index] = { ...rect }
+                this.selecteditem = { ...rect }
                 this.forceRerender()
+                this.save_history()
                 // change fill
             } else {
                 console.log(376, "rect undfind", e.target.attrs.name, this.layers.map(x => ({ name: x.name, display: x.name_display })));
@@ -661,7 +683,7 @@ export default {
                             this.colors.hex = rect.fill
                         }
 
-                        this.selecteditem = rect
+                        this.selecteditem = { ...rect }
                         this.active_layer_action(this.selectedShapeName)
 
 
@@ -821,7 +843,7 @@ export default {
 
                 var find_index = this.layers.findIndex(x => x.name == name)
                 this.layers[find_index].text = text
-                this.selecteditem = this.layers[find_index]
+                this.selecteditem = { ...this.layers[find_index] }
                 this.forceRerender()
             }
 
@@ -902,7 +924,7 @@ export default {
             }
 
         },
-        inactive_layer_action(){
+        inactive_layer_action() {
             var el_layer = document.getElementsByClassName("layer-item")
             for (var i = 0; i < el_layer.length; i++) {
                 el_layer[i].classList.remove("layer-item-active")
@@ -952,7 +974,7 @@ export default {
             this.hide_context_menu_object()
         },
         hidden_layer() {
-            this.layers[this.index_layer_selected].disable = true
+            this.layers[this.index_layer_selected].visible = true
         },
         menu_action(menu_type) {
             this.clickUnSelectLayerItem()
@@ -962,7 +984,7 @@ export default {
                 case "text": {
                     this.layers.unshift({
                         type: "text",
-                        disable: false,
+                        visible: true,
                         name_edit: false,
                         rotation: 0,
                         x: 150,
@@ -982,6 +1004,7 @@ export default {
                     })
                     setTimeout(() => {
                         this.clickSelectLayerItem(name)
+                        this.save_history()
                     }, 100)
 
                     break;
@@ -989,7 +1012,7 @@ export default {
                 case "rectangle": {
                     this.layers.unshift({
                         type: "rectangle",
-                        disable: false,
+                        visible: true,
                         name_edit: false,
                         rotation: 0,
                         x: 150,
@@ -1006,13 +1029,14 @@ export default {
                     })
                     setTimeout(() => {
                         this.clickSelectLayerItem(name)
+                        this.save_history()
                     }, 100)
                     break;
                 }
                 case "circle": {
                     this.layers.unshift({
                         type: "circle",
-                        disable: false,
+                        visible: true,
                         name_edit: false,
                         rotation: 0,
                         x: 150,
@@ -1029,13 +1053,14 @@ export default {
                     })
                     setTimeout(() => {
                         this.clickSelectLayerItem(name)
+                        this.save_history()
                     }, 100)
                     break;
                 }
                 case "triangular": {
                     this.layers.unshift({
-                        type: "regular-polygon",
-                        disable: false,
+                        type: "triangular",
+                        visible: true,
                         name_edit: false,
                         x: 150,
                         y: 150,
@@ -1045,12 +1070,13 @@ export default {
                         scaleX: 1,
                         scaleY: 1,
                         name,
-                        name_display: "regular-polygon",
+                        name_display: "triangular",
                         draggable: true,
                         zIndex: this.layers.length
                     })
                     setTimeout(() => {
                         this.clickSelectLayerItem(name)
+                        this.save_history()
                     })
                     break;
                 }
@@ -1059,6 +1085,7 @@ export default {
                     break;
                 }
                 case "undo": {
+                    this.undo()
                     break;
                 }
                 default:
@@ -1110,14 +1137,7 @@ export default {
             }
         }
     },
-    watch: {
-        layers: {
-            handler: function () {
-
-            },
-            deep: true
-        }
-    },
+   
     computed: {
 
     }
@@ -1187,7 +1207,7 @@ export default {
     border-bottom: 1px solid #ccc;
 }
 
-#layers-body>.disable {
+#layers-body>.visible {
     color: #a0a0a0;
 }
 
