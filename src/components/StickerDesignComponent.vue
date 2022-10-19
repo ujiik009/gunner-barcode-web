@@ -7,7 +7,7 @@
             <v-stage ref="stage" :config="configKonva" style="position: absolute;top:0"
                 @mousedown="handleStageMouseDown" @mousemove="handleStageMouseMove" @mouseup="handleStageMouseUp"
                 @touchstart="handleStageMouseDown" @contextmenu="handleContentMenu">
-                <v-layer>
+                <v-layer ref="layer-out">
                     <v-transformer ref="transformer"
                         :config="{borderDash: [4, 3],padding:10,anchorFill:'#fd7e14',anchorCornerRadius: 5,borderStroke:'#fd7e14',anchorStroke:'#fd7e14'}" />
                     <div v-for="item in layers" :key="item.name">
@@ -16,14 +16,15 @@
                                 @transform="handleTransform" @transformend="handleTransformEnd"
                                 @dragend="handleTransformEnd" @click="handleClick" @dblclick="handleEditText"
                                 @dbtap="handleEditText" />
-                            <v-rect class="shape" v-if="!item.disable && item.type == 'rect'" :config="item"
+                            <v-rect class="shape" v-if="!item.disable && item.type == 'rectangle'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
                             <v-circle class="shape" v-if="!item.disable  && item.type == 'circle'" :config="item"
                                 @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
                             <v-regular-polygon class="shape" v-if="!item.disable  && item.type == 'regular-polygon'"
                                 :config="item" @transformend="handleTransformEnd" @dragend="handleTransformEnd"
                                 @click="handleClick" />
-
+                            <v-image class="shape" v-if="!item.disable && item.type == 'image'" :config="item"
+                                @transformend="handleTransformEnd" @dragend="handleTransformEnd" @click="handleClick" />
                         </div>
 
                     </div>
@@ -32,7 +33,9 @@
                 </v-layer>
 
             </v-stage>
-
+            <div>
+                <button @click="exportImage" class="btn btn-info" id="btn-export" ref="btn-export">Export Image</button>
+            </div>
             <div id="color-picker">
                 <chrome-picker style="width:200px" :value="colors.hex" @input="updateValueColor" />
             </div>
@@ -79,6 +82,14 @@
             <div id="edit_shape_component" v-if="index_layer_selected>=0" :class="{'set-bottom-layer':!expand_layer}">
                 <EditShapeText @change="handleChangeEditShape" v-if="selecteditem.type == 'text' && renderComponent"
                     :data="selecteditem" />
+                <EditShapeRectangle @change="handleChangeEditShape"
+                    v-if="selecteditem.type == 'rectangle' && renderComponent" :data="selecteditem" />
+                <EditShapeTriangular @change="handleChangeEditShape"
+                    v-if="selecteditem.type == 'triangular' && renderComponent" :data="selecteditem" />
+                <EditShapeCircle @change="handleChangeEditShape" v-if="selecteditem.type == 'circle' && renderComponent"
+                    :data="selecteditem" />
+                <EditShapeImage @change="handleChangeEditShape" v-if="selecteditem.type == 'image' && renderComponent"
+                    :data="selecteditem" />
             </div>
             <!-- {{context_menu_layer_open}} -->
             <div id="context-menu-layer" ref="context_menu_layer" v-show="context_menu_layer_open == true"
@@ -111,7 +122,12 @@
                             d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
                     </svg> <span>Send Backwards</span>
                 </div>
-
+                <div @click="duplicate_shape" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-files" viewBox="0 0 16 16">
+                        <path
+                            d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
+                    </svg> <span>Duplicate</span>
+                </div>
                 <div @click="delete_layer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                         height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path
@@ -160,7 +176,12 @@
                             d="M1 9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4.5a.5.5 0 0 1 0 1H1v2h4.5a.5.5 0 0 1 0 1H1zm9.5 0a.5.5 0 0 1 0-1H15V6h-4.5a.5.5 0 0 1 0-1H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4.5z" />
                     </svg> <span>Send Backwards</span>
                 </div>
-
+                <div @click="duplicate_shape" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-files" viewBox="0 0 16 16">
+                        <path
+                            d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z" />
+                    </svg> <span>Duplicate</span>
+                </div>
                 <div @click="delete_layer" class="context_menu_item"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                         height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                         <path
@@ -201,7 +222,17 @@
         </div>
         <b-modal ref="modal-upload-image" header-close-content :title="`Upload your sticker`" size="lg">
             <div>
-
+                <div id="upload-block">
+                    <label id="block-upload-input" for="upload-file-input">
+                        <div style="font-size:23px;font-weight: 500;">Upload an image</div>
+                        <div>
+                            <b-icon icon="cloud-arrow-up-fill" style="width: 120px; height: 120px;color:#ffead8" />
+                        </div>
+                        <div>(png,jpg, or svg files)</div>
+                        <div style="margin-top:30px">Drag an image or Browse</div>
+                    </label>
+                    <input type="file" id="upload-file-input" accept="image/*" @change="handleChangeFile" />
+                </div>
 
             </div>
         </b-modal>
@@ -219,6 +250,10 @@ import ClickOutside from 'vue-click-outside'
 import { v4 as uuidv4 } from 'uuid';
 import Konva from "konva"
 import EditShapeText from "./StickerDesignComponent/EditShapeText.vue"
+import EditShapeRectangle from "./StickerDesignComponent/EditShapeRectangle.vue"
+import EditShapeTriangular from "./StickerDesignComponent/EditShapeTriangular.vue"
+import EditShapeCircle from "./StickerDesignComponent/EditShapeCircle.vue"
+import EditShapeImage from "./StickerDesignComponent/EditShapeImage.vue"
 var const_data = {
     CLICK_LEFT: 0,
     CLICK_RIGHT: 2
@@ -234,16 +269,31 @@ function getPosition(el) {
     }
     return { top: y, left: x };
 }
+
+function downloadURI(uri, name) {
+    var link = document.createElement('a');
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 export default {
     components: {
         'chrome-picker': Chrome,
-        EditShapeText
+        EditShapeText,
+        EditShapeRectangle,
+        EditShapeTriangular,
+        EditShapeCircle,
+        EditShapeImage
     },
     mounted() {
         this.drawGrid()
     },
     data() {
         return {
+            file_input: null,
             renderComponent: true,
             expand_layer: true,
             configKonva: {
@@ -295,7 +345,7 @@ export default {
                     sub_menu_open: false,
                     sub_menu: [
                         {
-                            type: "rect",
+                            type: "rectangle",
                             icon_svg: '<svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" fill="currentColor"/></svg>'
                         },
                         {
@@ -327,6 +377,75 @@ export default {
         ClickOutside
     },
     methods: {
+        exportImage() {
+            const transformerNode = this.$refs.transformer.getNode();
+            var group = new Konva.Group();
+            transformerNode.nodes().map((shape) => {
+                return shape.clone()
+            }).reverse().map((shape) => { group.add(shape) })
+            const uri = group.toDataURL({ pixelRatio: 3 });
+            downloadURI(uri, "make-by-gunner-barcode-design.png")
+
+            console.log(transformerNode.getStage());
+        },
+        showButtonExport(open) {
+            
+            if (open == true) {
+                this.$refs["btn-export"].style.display = "block"
+            } else {
+                this.$refs["btn-export"].style.display = "none"
+            }
+
+
+        },
+        handleChangeFile(e) {
+            var URL = window.webkitURL || window.URL;
+            var url = URL.createObjectURL(e.target.files[0]);
+            var img = new Image();
+            img.src = url;
+
+
+
+            var push_image_to_layer = (data) => {
+                this.layers.unshift(data)
+
+                setTimeout(() => {
+                    this.clickSelectLayerItem(data.name)
+                }, 100)
+            }
+
+            var length_of_layer = () => {
+                return this.layers.length
+            }
+
+            img.onload = function () {
+
+                var img_width = img.width;
+                var img_height = img.height;
+
+                // calculate dimensions to get max 300px
+                var max = 300;
+                var ratio = (img_width > img_height ? (img_width / max) : (img_height / max))
+                var name = uuidv4()
+                push_image_to_layer({
+                    type: "image",
+                    disable: false,
+                    name_edit: false,
+                    rotation: 0,
+                    x: 50,
+                    y: 30,
+                    image: img,
+                    width: img_width / ratio,
+                    height: img_height / ratio,
+                    scaleX: 1,
+                    scaleY: 1,
+                    name,
+                    name_display: "image",
+                    draggable: true,
+                    zIndex: length_of_layer()
+                })
+            }
+        },
         async forceRerender() {
             // Remove MyComponent from the DOM
             this.renderComponent = false;
@@ -355,6 +474,21 @@ export default {
             var previous_index = ((this.index_layer_selected - 1) < 0) ? 0 : this.index_layer_selected - 1
             this.reOrderLayers(this.index_layer_selected, previous_index)
             this.index_layer_selected = previous_index
+        },
+        duplicate_shape() {
+            if (this.index_layer_selected >= 0) {
+                var shape_data = {...this.layers[this.index_layer_selected]}
+                shape_data.x += 20
+                shape_data.y += 20
+                shape_data.name = uuidv4()
+                shape_data.zIndex = this.layers.length
+                this.layers.unshift(shape_data)
+
+                setTimeout(() => {
+                    this.clickSelectLayerItem(shape_data.name)
+                },20)
+            }
+
         },
         reOrderLayers(oldIndex, newIndex) {
             if (oldIndex > newIndex) {
@@ -417,7 +551,7 @@ export default {
             }
             this.index_layer_selected = index
             this.selecteditem = this.layers[index]
-            console.log(this.selecteditem.x, this.selecteditem.y);
+            
             this.active_layer_action(this.selectedShapeName)
             this.updateTransformer();
 
@@ -426,6 +560,7 @@ export default {
             this.selectedShapeName = '';
             this.selecteditem = null
             this.index_layer_selected = -1
+            this.inactive_layer_action()
             this.updateTransformer();
             return;
         },
@@ -487,19 +622,15 @@ export default {
                 this.selectedShapeName = '';
                 this.clickUnSelectLayerItem()
                 this.updateTransformer();
-                //this.clickSelectLayerItem()
                 x1 = e.target.getStage().getPointerPosition().x;
                 y1 = e.target.getStage().getPointerPosition().y;
                 x2 = e.target.getStage().getPointerPosition().x;
                 y2 = e.target.getStage().getPointerPosition().y;
 
-
-
-
                 selectionRectangle.visible(true);
                 selectionRectangle.width(0);
                 selectionRectangle.height(0);
-
+                this.showButtonExport(false)
                 return;
             }
 
@@ -517,7 +648,6 @@ export default {
                         }
                     }
 
-
                     // find clicked rect by its name
 
                     const name = e.target.name();
@@ -527,7 +657,10 @@ export default {
                         this.selectedShapeName = name;
                         this.index_layer_selected = this.layers.findIndex((r) => r.name === name);
                         // update color picker
-                        this.colors.hex = rect.fill
+                        if (rect.fill) {
+                            this.colors.hex = rect.fill
+                        }
+
                         this.selecteditem = rect
                         this.active_layer_action(this.selectedShapeName)
 
@@ -588,6 +721,10 @@ export default {
                 transformerNode.nodes(selected);
                 this.selectedShapeNameMulti = selected.map(x => x.attrs.name)
                 this.selectedShapeName = ''
+
+                if (selected.length > 0) {
+                    this.showButtonExport(true)
+                }
             }, 1);
 
 
@@ -765,6 +902,12 @@ export default {
             }
 
         },
+        inactive_layer_action(){
+            var el_layer = document.getElementsByClassName("layer-item")
+            for (var i = 0; i < el_layer.length; i++) {
+                el_layer[i].classList.remove("layer-item-active")
+            }
+        },
         updateTransformer() {
             // here we need to manually attach or detach Transformer node
             const transformerNode = this.$refs.transformer.getNode();
@@ -843,9 +986,9 @@ export default {
 
                     break;
                 }
-                case "rect": {
+                case "rectangle": {
                     this.layers.unshift({
-                        type: "rect",
+                        type: "rectangle",
                         disable: false,
                         name_edit: false,
                         rotation: 0,
@@ -857,7 +1000,7 @@ export default {
                         scaleY: 1,
                         fill: this.colors.hex,
                         name,
-                        name_display: "rect",
+                        name_display: "rectangle",
                         draggable: true,
                         zIndex: this.layers.length
                     })
@@ -1169,6 +1312,37 @@ canvas {
 
 .context_menu_item:hover {
     border: 0.5px solid rgb(156, 210, 255);
+}
+
+#upload-block {
+    display: flex;
+    justify-content: center;
+}
+
+#upload-file-input {
+    display: none;
+}
+
+#block-upload-input {
+    text-align: center;
+    background-color: #ffba82;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #8b5a31;
+}
+
+#block-upload-input:hover {
+    background-color: #ef9246;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+#btn-export {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: none;
 }
 </style>
 
