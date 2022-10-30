@@ -5,7 +5,7 @@
     <div class="content">
       <div class=" md-stepper-horizontal orange">
         <div :class="{'md-step':true,active:step.active,editable:step.editable,done:step.done}"
-          v-for="(step,index) in steps" :key="index" @click="clickActive(index)">
+          v-for="(step,index) in steps" :key="index" @click="clickActive(index,step.disable)">
           <div class="md-step-circle"><span>{{index+1}}</span></div>
           <div class="md-step-title">{{step.title}}</div>
           <div class="md-step-optional" v-if="step.optional">Optional</div>
@@ -18,7 +18,7 @@
           <div class="box-content">
             <div class="box-item">
               <div class="item">
-                <div>เลือกชนิดสติ๊กเกอร์</div>
+                <div class="label">เลือกชนิดสติ๊กเกอร์</div>
                 <div>
                   <select @click="setSize" class="select-item" name="" id="" v-model="record.sticker_type">
                     <option :value="index" v-for="(condition_item,index) in sticker_condition" :key="index">
@@ -28,7 +28,7 @@
                 </div>
               </div>
               <div class="item">
-                <div>เลือกขนาด</div>
+                <div class="label">เลือกขนาด</div>
                 <div>
                   <select @click="setType" class="select-item" name="" id="" v-model="record.sticker_size">
                     <option :value="index" v-for="(size_item ,index) in size" :key="index">
@@ -38,7 +38,7 @@
                 </div>
               </div>
               <div class="item">
-                <div>เลือกรูปแบบ ลักษณะ</div>
+                <div class="label">เลือกรูปแบบ ลักษณะ</div>
                 <div>
                   <select @click="selectType" class="select-item" name="" id="" v-model="record.sticker_texture">
                     <option :value="index" v-for="(type_item ,index) in type" :key="index">
@@ -48,7 +48,7 @@
                 </div>
               </div>
               <div class="item">
-                <div>เลือกจำนวนการผลิต (ขั้นต่ำ {{min_order}})</div>
+                <div class="label">เลือกจำนวนการผลิต (ขั้นต่ำ {{min_order}})</div>
                 <div>
                   <input class="input-item" type="number" :min="min_order" v-model="record.qty">
                 </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="box-item">
               <div class="item">
-                <div>เลือกสี</div>
+                <div class="label">เลือกสี</div>
                 <div>
                   <!-- <input class="select-item" type="color" id="favcolor" name="favcolor" value="#fff">
                    -->
@@ -72,13 +72,53 @@
           </div>
         </div>
         <div v-if="step == 1">
-          <StickerDesignComponent />
+          <StickerDesignComponent :handleStickerResult="handleStickerResult" />
 
 
         </div>
-        <div v-if="step == 2">ยืนยันแบบ</div>
-      </div>
+        <div v-if="step == 2">
+          <div class="box-content">
+            <div class="box-item">
+              <div class="item">
+                <div class="label">แบบสติกเกอร์</div>
+                <center><img alt="sticker preview" style="width: 300px;height:300px;"
+                    :src="confirm_record.sticker_url" />
+                </center>
+              </div>
+              <div class="item">
+                <div class="label">ชนิดสติ๊กเกอร์</div>
+                <div>{{confirm_record.sticker_type}}</div>
+              </div>
+              <div class="item">
+                <div class="label">ขนาดสติ๊กเกอร์</div>
+                <div>{{confirm_record.sticker_size}}</div>
+              </div>
+              <div class="item">
+                <div class="label">รูปแบบ ลักษณะสติ๊กเกอร์</div>
+                <div>{{confirm_record.sticker_texture}}</div>
+              </div>
+              <div class="item">
+                <div class="label">จำนวนการผลิต</div>
+                <div>{{confirm_record.qty}}</div>
+              </div>
+              <div class="item">
+                <div class="label">สี</div>
+                <div class="color-preview"
+                  :style="{width:'100%',height:'100px','background-color':confirm_record.color}">
+                  {{confirm_record.color}}</div>
+              </div>
+              <div class="item" style="text-align: right;">
 
+                <button class="btn-custom-secondary" style="width: 250px ;">ยกเลิก</button>
+                <button class="btn-custom-primary" style="width: 250px ;"
+                  @click="submitStrcker">ส่งแบบสติกเกอร๋</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- <div>{{confirm_record}}</div> -->
     </div>
 
 
@@ -120,7 +160,8 @@ export default {
         sticker_size: "",
         sticker_texture: "",
         color: "#FFFFFF",
-        qty: 0
+        qty: 0,
+        sticker_url: ""
       },
       steps: [
         {
@@ -128,21 +169,24 @@ export default {
           optional: false,
           done: false,
           editable: true,
-          active: true
+          active: true,
+          disable: false
         },
         {
           title: "ออกแบบสตกเกอร์",
           optional: true,
           done: false,
           editable: false,
-          active: false
+          active: false,
+          disable: true
         },
         {
           title: "ยืนยันแบบ",
           optional: false,
           done: false,
           editable: false,
-          active: false
+          active: false,
+          disable: true
         },
       ]
     }
@@ -151,6 +195,17 @@ export default {
     this.loadValue()
   },
   methods: {
+    submitStrcker() {
+      console.log(this.confirm_record);
+      alert("submit")
+    },
+    handleStickerResult(sticker_url) {
+      //sticker_url is base64
+      this.confirm_record.sticker_url = sticker_url
+      this.steps[2].disable = false
+      this.clickActive(2, this.steps[2].disable)
+
+    },
     handleNextButton() {
       if (this.record.sticker_type !== "") {
         this.confirm_record.sticker_type = this.sticker_condition[this.record.sticker_type].name
@@ -179,12 +234,13 @@ export default {
 
       if (this.record.qty >= this.min_order) {
         this.confirm_record.qty = this.record.qty
-      }else{
+      } else {
         alert("จำนวนต้องไม่น้อยกว่าขั้นต่ำ")
         return
       }
 
-      this.step = 1
+      this.steps[1].disable = false
+      this.clickActive(1, this.steps[1].disable)
 
     },
     updateValueColor(e) {
@@ -208,7 +264,8 @@ export default {
       this.index_type = event.target.value
       this.min_order = this.sticker_condition[this.index_sticker].size[this.index_size].type[event.target.value].min_order
     },
-    clickActive(step_number) {
+    clickActive(step_number, disable) {
+      if (disable == true) return
       this.step = step_number
       this.steps[step_number].editable = true
       this.steps[step_number].active = true
@@ -258,6 +315,11 @@ export default {
 
 .item {
   margin: 30px;
+  font-size: 18px;
+}
+
+.label {
+  font-weight: 500;
   font-size: 22px;
 }
 
@@ -401,5 +463,9 @@ export default {
   left: 0;
   right: 50%;
   margin-right: 20px;
+}
+
+.color-preview {
+  border: 1px solid black;
 }
 </style>

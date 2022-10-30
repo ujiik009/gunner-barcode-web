@@ -45,6 +45,7 @@ export default {
 
 
 .btn-custom-primary {
+  margin: 5px;
   display: inline-block;
   font-weight: 400;
   color: #fafdff;
@@ -64,6 +65,7 @@ export default {
 }
 
 .btn-custom-secondary {
+  margin: 5px;
   display: inline-block;
   font-weight: 400;
   color: #fafdff;

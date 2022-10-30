@@ -1,6 +1,6 @@
 <template>
     <div id="container-canvas">
-        
+
         <div id="canvas-wrap" @mousemove="updateCoordinates">
             <canvas width="1000" height="1000" ref="canvas" id="canvas" @load="drawGrid">
 
@@ -34,8 +34,10 @@
 
             </v-stage>
             <div>
-                <button @click="exportImage" class="btn-custom-secondary" id="btn-export" ref="btn-export">ดาว์นโหลด สติกเกอร๋</button>
-                <button @click="confirmSicker" class="btn-custom-primary" id="btn-confirm-sticker" ref="btn-confirm-sticker">ยืนยัน สติกเกอร๋</button>
+                <button @click="exportImage" class="btn-custom-secondary" id="btn-export" ref="btn-export">ดาว์นโหลด
+                    สติกเกอร๋</button>
+                <button @click="confirmSicker" class="btn-custom-primary" id="btn-confirm-sticker"
+                    ref="btn-confirm-sticker">ยืนยัน สติกเกอร๋</button>
             </div>
             <div id="color-picker">
                 <chrome-picker style="width:200px" :value="colors.hex" @input="updateValueColor" />
@@ -283,6 +285,9 @@ function downloadURI(uri, name) {
 }
 
 export default {
+    props: {
+        handleStickerResult: Function
+    },
     components: {
         'chrome-picker': Chrome,
         EditShapeText,
@@ -409,8 +414,15 @@ export default {
             const uri = group.toDataURL({ pixelRatio: 3 });
             downloadURI(uri, "make-by-gunner-barcode-design.png")
         },
-        confirmSicker(){
-            alert("confirmSicker")
+        confirmSicker() {
+            const transformerNode = this.$refs.transformer.getNode();
+            var group = new Konva.Group();
+            transformerNode.nodes().map((shape) => {
+                return shape.clone()
+            }).reverse().map((shape) => { group.add(shape) })
+            const uri = group.toDataURL({ pixelRatio: 3 });
+            
+            this.handleStickerResult(uri)
         },
         showButtonExport(open) {
 
@@ -1143,7 +1155,7 @@ export default {
             }
         }
     },
-   
+
     computed: {
 
     }
@@ -1370,6 +1382,7 @@ canvas {
     left: 5px;
     display: none;
 }
+
 #btn-confirm-sticker {
     position: absolute;
     top: 5px;
