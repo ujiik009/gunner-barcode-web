@@ -34,7 +34,8 @@
 
             </v-stage>
             <div>
-                <button @click="exportImage" class="btn btn-info" id="btn-export" ref="btn-export">Export Image</button>
+                <button @click="exportImage" class="btn-custom-secondary" id="btn-export" ref="btn-export">ดาว์นโหลด สติกเกอร๋</button>
+                <button @click="confirmSicker" class="btn-custom-primary" id="btn-confirm-sticker" ref="btn-confirm-sticker">ยืนยัน สติกเกอร๋</button>
             </div>
             <div id="color-picker">
                 <chrome-picker style="width:200px" :value="colors.hex" @input="updateValueColor" />
@@ -408,12 +409,17 @@ export default {
             const uri = group.toDataURL({ pixelRatio: 3 });
             downloadURI(uri, "make-by-gunner-barcode-design.png")
         },
+        confirmSicker(){
+            alert("confirmSicker")
+        },
         showButtonExport(open) {
 
             if (open == true) {
                 this.$refs["btn-export"].style.display = "block"
+                this.$refs["btn-confirm-sticker"].style.display = "block"
             } else {
                 this.$refs["btn-export"].style.display = "none"
+                this.$refs["btn-confirm-sticker"].style.display = "none"
             }
 
 
@@ -1362,6 +1368,12 @@ canvas {
     position: absolute;
     top: 5px;
     left: 5px;
+    display: none;
+}
+#btn-confirm-sticker {
+    position: absolute;
+    top: 5px;
+    left: 180px;
     display: none;
 }
 </style>

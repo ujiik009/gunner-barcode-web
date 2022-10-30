@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <MainLayout />
-   
+
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   },
   data() {
     return {
-      
+
     }
   }
 }
@@ -40,5 +40,45 @@ export default {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
+}
+
+
+
+.btn-custom-primary {
+  display: inline-block;
+  font-weight: 400;
+  color: #fafdff;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #F96302;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.btn-custom-secondary {
+  display: inline-block;
+  font-weight: 400;
+  color: #fafdff;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: #7e421a;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 </style>

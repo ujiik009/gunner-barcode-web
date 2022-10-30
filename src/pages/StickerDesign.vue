@@ -1,61 +1,6 @@
 <template>
   <div class="main-content">
-    <!-- <div class="box-content">
-      <div class="box-item">
-        <div class="item">
-          <div>เลือกชนิดสติ๊กเกอร์</div>
-          <div>
-            <select @click="setSize" class="select-item" name="" id="">
-              <option :value="index" v-for="(condition_item,index) in sticker_condition" :key="index">
-                {{condition_item.name}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="item">
-          <div>เลือกขนาด</div>
-          <div>
-            <select @click="setType" class="select-item" name="" id="">
-              <option :value="index" v-for="(size_item ,index) in size" :key="index">
-                {{size_item.size}}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="item">
-          <div>เลือกรูปแบบ ลักษณะ</div>
-          <div>
-            <select @click="selectType" class="select-item" name="" id="">
-              <option :value="index" v-for="(type_item ,index) in type" :key="index">
-                {{type_item.name}}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="box-item">
-        <div class="item">
-          <div>เลือกสี</div>
-          <div>
-            <input class="select-item" type="color" id="favcolor" name="favcolor" value="#fff">
-          </div>
-        </div>
-        <div class="item">
-          <div>เลือกจำนวนการผลิต </div>
-          <div>
-            <input type="number" :min="min_order">
-          </div>
-        </div>
-        <div class="item">
-          <div>อัพโหลดแบบสติ๊กเกอร์ </div>
-          <div>
-            <input type="file" accept="image/png, image/jpeg">
-          </div>
-        </div>
-      </div>
-    </div> 
-    <div><button style="float: right;margin-right: 50px;">ยืนยันแบบ</button></div>
-    -->
+
     <!-- Stepper -->
     <div class="content">
       <div class=" md-stepper-horizontal orange">
@@ -70,11 +15,65 @@
       </div>
       <div>
         <div v-if="step == 0">
-          เลือกขนาด
+          <div class="box-content">
+            <div class="box-item">
+              <div class="item">
+                <div>เลือกชนิดสติ๊กเกอร์</div>
+                <div>
+                  <select @click="setSize" class="select-item" name="" id="" v-model="record.sticker_type">
+                    <option :value="index" v-for="(condition_item,index) in sticker_condition" :key="index">
+                      {{condition_item.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="item">
+                <div>เลือกขนาด</div>
+                <div>
+                  <select @click="setType" class="select-item" name="" id="" v-model="record.sticker_size">
+                    <option :value="index" v-for="(size_item ,index) in size" :key="index">
+                      {{size_item.size}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="item">
+                <div>เลือกรูปแบบ ลักษณะ</div>
+                <div>
+                  <select @click="selectType" class="select-item" name="" id="" v-model="record.sticker_texture">
+                    <option :value="index" v-for="(type_item ,index) in type" :key="index">
+                      {{type_item.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="item">
+                <div>เลือกจำนวนการผลิต (ขั้นต่ำ {{min_order}})</div>
+                <div>
+                  <input class="input-item" type="number" :min="min_order" v-model="record.qty">
+                </div>
+              </div>
+            </div>
+            <div class="box-item">
+              <div class="item">
+                <div>เลือกสี</div>
+                <div>
+                  <!-- <input class="select-item" type="color" id="favcolor" name="favcolor" value="#fff">
+                   -->
+                  <chrome-picker style="width:250PX" :value="record.colors.hex" @input="updateValueColor" />
+                </div>
+              </div>
+              <div class="item">
+                <div>
+                  <button class="btn-custom-primary" style="width: 250PX ;" @click="handleNextButton">ถัดไป</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div v-if="step == 1">
           <StickerDesignComponent />
-          
+
 
         </div>
         <div v-if="step == 2">ยืนยันแบบ</div>
@@ -90,11 +89,12 @@
 <script>
 import sticker_condition from "../assets/sticker_condition.json"
 import StickerDesignComponent from "../components/StickerDesignComponent.vue"
-
+import { Chrome } from 'vue-color'
 // import StickerEditor from "../components/StickerEditor.vue"
 export default {
   components: {
     StickerDesignComponent,
+    'chrome-picker': Chrome,
     // StickerEditor
   },
   data() {
@@ -107,6 +107,21 @@ export default {
       index_size: 0,
       index_type: 0,
       step: 0,
+
+      record: {
+        sticker_type: "",
+        sticker_size: 0,
+        sticker_texture: "",
+        colors: { hex: "#FFFFFF" },
+        qty: 0
+      },
+      confirm_record: {
+        sticker_type: "",
+        sticker_size: "",
+        sticker_texture: "",
+        color: "#FFFFFF",
+        qty: 0
+      },
       steps: [
         {
           title: "เลือกขนาด",
@@ -136,6 +151,45 @@ export default {
     this.loadValue()
   },
   methods: {
+    handleNextButton() {
+      if (this.record.sticker_type !== "") {
+        this.confirm_record.sticker_type = this.sticker_condition[this.record.sticker_type].name
+      } else {
+        alert("โปรดเลือก เลือกชนิดสติ๊กเกอร์")
+        return
+      }
+
+      if (this.record.sticker_size !== "") {
+        this.confirm_record.sticker_size = this.sticker_condition[this.record.sticker_type].size[this.record.sticker_size].size
+      } else {
+        alert("โปรดเลือก เลือกขนาด")
+        return
+      }
+
+
+      if (this.record.sticker_texture !== "") {
+        this.confirm_record.sticker_texture = this.sticker_condition[this.record.sticker_type].size[this.record.sticker_size].type[this.record.sticker_texture].name
+      } else {
+        alert("โปรดเลือก เลือกขนาด")
+        return
+      }
+
+      this.confirm_record.color = this.record.colors.hex
+
+
+      if (this.record.qty >= this.min_order) {
+        this.confirm_record.qty = this.record.qty
+      }else{
+        alert("จำนวนต้องไม่น้อยกว่าขั้นต่ำ")
+        return
+      }
+
+      this.step = 1
+
+    },
+    updateValueColor(e) {
+      this.record.colors.hex = e.hex
+    },
     loadValue() {
       this.size = this.sticker_condition[this.index_sticker].size
       this.type = this.sticker_condition[this.index_sticker].size[this.index_size].type
@@ -189,19 +243,21 @@ export default {
 
 .box-content {
   display: flex;
-  padding: 10px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 .box-item {
   flex: 1;
 }
 
-.select-item {
+.select-item,
+.input-item {
   width: 250px;
 }
 
 .item {
-  margin: 20px;
+  margin: 30px;
   font-size: 22px;
 }
 
