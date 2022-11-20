@@ -25,10 +25,9 @@
     "vue-click-outside": "^1.1.0",
     "vue-color": "^2.8.1",
     "vue-konva": "^2.1.7",
-    "vue-lazytube": "^1.0.2",
+    "vue-lazytube": "^1.1.1",
     "vue-router": "^3.5.3",
-    "vue-stepper-component": "^1.0.0",
-    "vue2-google-maps": "^0.10.7"
+    "vue-stepper-component": "^1.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

@@ -14,41 +14,28 @@
         </div>
       </div>
     </div>
-    <div class="row-item">
-      <GmapMap :center="center" :zoom="20" style="width: 100%; height: 400px">
-        <GmapMarker
-          :position="{
-            lat: 13.732909843757113,
-            lng: 100.43310132740748,
-          }"
-        />
-      </GmapMap>
+    <div class="row-item center">
+
+      <img @click="open_map" src="@/assets/map_company.png" style="cursor: pointer;" />
+
     </div>
     <div>
-      <img
-        @click="open_facebook"
-        class="fixed-btn-facebook"
-        src="@/assets/Facebook_logo.png"
-      />
-      <img
-        @click="open_line"
-        class="fixed-btn-line"
-        src="@/assets/line_logo.png"
-      />
+      <img @click="open_facebook" class="fixed-btn-facebook" src="@/assets/Facebook_logo.png" />
+      <img @click="open_line" class="fixed-btn-line" src="@/assets/line_logo.png" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  //13.732909843757113, 100.43310132740748
+  // 13.750978671840915, 100.53738645077931
   data() {
     return {
       data1:
         "30,32 ซอยเพชรเกษม 48 แยก 51 ถนนเพชรเกษม แขวงบางแวก  เขตภาษีเจริญ กรุงเทพฯ 10160 โทร. 02-457-1001 แฟ็กซ์. 02-457-1002",
       data2:
         "ห้อง 304 ชั้น 3 พันธุ์ทิพย์พลาซ่า ประตูน้ำ 604/3 ถนนเพชรบุรี แขวงถนนเพชรบุรี เขตราชเทวี กรุงเทพฯ 10400 โทร. 02-656-5477, 063-642-3282",
-      center: { lat: 13.732909843757113, lng: 100.43310132740748 },
+      center: { lat: 13.750978671840915, lng: 100.53738645077931 },
     };
   },
   methods: {
@@ -62,6 +49,10 @@ export default {
         .open("https://page.line.me/barcodethai?openQrModal=true", "_blank")
         .focus();
     },
+    open_map() {
+      window.open("https://www.google.com/maps/search/?api=1&query=" + this.center.lat + "," + this.center.lng)
+      focus();
+    }
   },
 };
 </script>
@@ -70,10 +61,12 @@ export default {
 .row-item {
   display: flex;
 }
+
 .col-item {
   padding: 10px;
   flex: 1;
 }
+
 .fixed-btn-facebook {
   background-repeat: no-repeat;
   background-size: auto;
@@ -84,6 +77,7 @@ export default {
   height: 50px;
   cursor: pointer;
 }
+
 .fixed-btn-line {
   background-repeat: no-repeat;
   background-size: auto;
@@ -93,5 +87,9 @@ export default {
   width: 50px;
   height: 50px;
   cursor: pointer;
+}
+
+.center {
+  justify-content: center;
 }
 </style>

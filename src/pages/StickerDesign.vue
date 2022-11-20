@@ -4,10 +4,10 @@
     <!-- Stepper -->
     <div class="content">
       <div class=" md-stepper-horizontal orange">
-        <div :class="{'md-step':true,active:step.active,editable:step.editable,done:step.done}"
-          v-for="(step,index) in steps" :key="index" @click="clickActive(index,step.disable)">
-          <div class="md-step-circle"><span>{{index+1}}</span></div>
-          <div class="md-step-title">{{step.title}}</div>
+        <div :class="{ 'md-step': true, active: step.active, editable: step.editable, done: step.done }"
+          v-for="(step,index) in steps" :key="index" @click="clickActive(index, step.disable)">
+          <div class="md-step-circle"><span>{{ index + 1 }}</span></div>
+          <div class="md-step-title">{{ step.title }}</div>
           <div class="md-step-optional" v-if="step.optional">Optional</div>
           <div class="md-step-bar-left"></div>
           <div class="md-step-bar-right"></div>
@@ -21,8 +21,8 @@
                 <div class="label">เลือกชนิดสติ๊กเกอร์</div>
                 <div>
                   <select @click="setSize" class="select-item" name="" id="" v-model="record.sticker_type">
-                    <option :value="index" v-for="(condition_item,index) in sticker_condition" :key="index">
-                      {{condition_item.name}}
+                    <option :value="index" v-for="(condition_item, index) in sticker_condition" :key="index">
+                      {{ condition_item.name }}
                     </option>
                   </select>
                 </div>
@@ -31,8 +31,8 @@
                 <div class="label">เลือกขนาด</div>
                 <div>
                   <select @click="setType" class="select-item" name="" id="" v-model="record.sticker_size">
-                    <option :value="index" v-for="(size_item ,index) in size" :key="index">
-                      {{size_item.size}}
+                    <option :value="index" v-for="(size_item, index) in size" :key="index">
+                      {{ size_item.size }}
                     </option>
                   </select>
                 </div>
@@ -41,14 +41,14 @@
                 <div class="label">เลือกรูปแบบ ลักษณะ</div>
                 <div>
                   <select @click="selectType" class="select-item" name="" id="" v-model="record.sticker_texture">
-                    <option :value="index" v-for="(type_item ,index) in type" :key="index">
-                      {{type_item.name}}
+                    <option :value="index" v-for="(type_item, index) in type" :key="index">
+                      {{ type_item.name }}
                     </option>
                   </select>
                 </div>
               </div>
               <div class="item">
-                <div class="label">เลือกจำนวนการผลิต (ขั้นต่ำ {{min_order}})</div>
+                <div class="label">เลือกจำนวนการผลิต (ขั้นต่ำ {{ min_order }})</div>
                 <div>
                   <input class="input-item" type="number" :min="min_order" v-model="record.qty">
                 </div>
@@ -87,25 +87,25 @@
               </div>
               <div class="item">
                 <div class="label">ชนิดสติ๊กเกอร์</div>
-                <div>{{confirm_record.sticker_type}}</div>
+                <div>{{ confirm_record.sticker_type }}</div>
               </div>
               <div class="item">
                 <div class="label">ขนาดสติ๊กเกอร์</div>
-                <div>{{confirm_record.sticker_size}}</div>
+                <div>{{ confirm_record.sticker_size }}</div>
               </div>
               <div class="item">
                 <div class="label">รูปแบบ ลักษณะสติ๊กเกอร์</div>
-                <div>{{confirm_record.sticker_texture}}</div>
+                <div>{{ confirm_record.sticker_texture }}</div>
               </div>
               <div class="item">
                 <div class="label">จำนวนการผลิต</div>
-                <div>{{confirm_record.qty}}</div>
+                <div>{{ confirm_record.qty }}</div>
               </div>
               <div class="item">
                 <div class="label">สี</div>
                 <div class="color-preview"
-                  :style="{width:'100%',height:'100px','background-color':confirm_record.color}">
-                  {{confirm_record.color}}</div>
+                  :style="{ width: '100%', height: '100px', 'background-color': confirm_record.color }">
+                  {{ confirm_record.color }}</div>
               </div>
               <div class="item" style="text-align: right;">
 
@@ -130,7 +130,8 @@
 import sticker_condition from "../assets/sticker_condition.json"
 import StickerDesignComponent from "../components/StickerDesignComponent.vue"
 import { Chrome } from 'vue-color'
-// import StickerEditor from "../components/StickerEditor.vue"
+import axios from "axios"
+var base_url = "http://127.0.0.1:3333"
 export default {
   components: {
     StickerDesignComponent,
@@ -195,9 +196,13 @@ export default {
     this.loadValue()
   },
   methods: {
-    submitStrcker() {
-      console.log(this.confirm_record);
-      alert("submit")
+    async submitStrcker() {
+      try {
+        var { data } = await axios.post(base_url + "/submit_sticker", { ...this.confirm_record })
+        alert(data.message)
+      } catch (error) {
+        alert("Error :" + error.message)
+      }
     },
     handleStickerResult(sticker_url) {
       //sticker_url is base64
