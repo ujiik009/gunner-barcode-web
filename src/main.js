@@ -6,6 +6,7 @@ import Home from '@/pages/Home.vue'
 import StickerDesign from '@/pages/StickerDesign.vue'
 import Claim from '@/pages/Claim.vue'
 import Vdo from '@/pages/Vdo.vue'
+import Login from '@/pages/Login.vue'
 import ProductDetail from '@/pages/ProductDetail'
 import LazyTube from "vue-lazytube";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -37,7 +38,8 @@ const routes = [
   { path: '/stickerdesign', component: StickerDesign },
   { path: '/claim', component: Claim },
   { path: '/vdo', component: Vdo },
-  { path: "/product/detail/:id", component: ProductDetail }
+  { path: "/product/detail/:id", component: ProductDetail },
+  { path: "/login", component: Login }
 
 
 ]

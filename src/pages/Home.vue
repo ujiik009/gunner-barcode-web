@@ -37,10 +37,11 @@
             <input placeholder="ค้นหา" class="input-search" v-model="text_search" />
           </div>
           <div class="box-std">
-            <div style="font-weight: 500;margin-bottom: 5px;font-size: 18px;">หนวดหมู่</div>
+            <div style="font-weight: 500;margin-bottom: 5px;font-size: 18px;">Brand</div>
             <div>
               <div v-for="cat in categories" :key="cat.brand">
-                {{ cat.brand }} ({{ cat.counting }})
+                <span class="categories" @click="get_product_by_brand(cat.brand)">{{ cat.brand }} ({{ cat.counting
+                }})</span>
               </div>
             </div>
           </div>
@@ -92,6 +93,17 @@ export default {
           this.setCloseLoading()
         })
     },
+    get_product_by_brand(brand) {
+      this.setOpenLoading()
+      axios.post(`${base_url}/products/brand`, {
+        brand: brand
+      })
+        .then((res) => {
+          this.products = res.data.data
+          this.setCloseLoading()
+        })
+    },
+
     openDetail(product_id) {
       this.$router.push(`/product/detail/${product_id}`)
     },
@@ -123,7 +135,7 @@ export default {
     filter_product: function () {
       var text_search = this.text_search
       return this.products.filter(function (item) {
-        return new RegExp(text_search,"igm").test(item.product_name)
+        return new RegExp(text_search, "igm").test(item.product_name)
       })
     }
   },
@@ -155,6 +167,14 @@ export default {
 </script>
 
 <style scoped>
+.categories {
+  cursor: pointer;
+}
+
+.categories:hover {
+  font-weight: 700;
+}
+
 .input-search {
   border: none;
   width: 100%;
