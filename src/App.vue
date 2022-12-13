@@ -51,9 +51,7 @@ export default {
   color: #fafdff;
   text-align: center;
   vertical-align: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+
   user-select: none;
   background-color: #F96302;
   border: 1px solid transparent;
