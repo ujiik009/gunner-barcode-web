@@ -33,19 +33,44 @@
           }}</div>
       </div>
     </div>
-    <b-modal ref="modal-cart" :title="`Cart Item (${carts.length})`" size="lg">
+    <b-modal ref="modal-cart" :title="`รายการสินค้า (${carts.length})`" size="lg">
       <div>
-        <div v-for="(item, index) in carts" :key="index" style="display:flex">
-          <div style="flex:1"><img :src="item.img_link" style="height:100px;width:100px" /></div>
-          <div style="flex:2;padding-top: 5%;">{{ item.product_name }}</div>
-          <div style="flex:1;padding-top: 5%;">{{ item.price }}</div>
-          <div style="flex:1;padding-top: 5%;">{{ item.qty }}</div>
-          <div style="flex:1;padding-top: 5%;">
-            <b-button variant="danger" @click="removeCart(index)">delete</b-button>
-          </div>
-
-        </div>
+        <b-tabs content-class="mt-3">
+          <b-tab title="สินค้า" active>
+            <div v-for="(item, index) in mainStore.$state.carts" :key="index" style="display:flex">
+              <div style="flex:1"><img :src="item.img_link" style="height:100px;width:100px" /></div>
+              <div style="flex:2;padding-top: 5%;">{{ item.product_name }}</div>
+              <div style="flex:1;padding-top: 5%;">{{ item.price }}</div>
+              <div style="flex:1;padding-top: 5%;">{{ item.qty }}</div>
+              <div style="flex:1;padding-top: 5%;">
+                <b-button variant="danger" @click="mainStore.removeCart(index)">delete</b-button>
+              </div>
+            </div>
+            <div style="border-top:1px solid #dee2e6;margin-top:10px;">
+              <div style="float:right;margin-top: 16px;font-weight: 600;">{{ carts.reduce((acc, current) => {
+                  return acc + (current.price * current.qty)
+                }, 0)
+              }} บาท</div>
+            </div>
+          </b-tab>
+          <b-tab title="ที่อยู่การจัดส่ง">
+            <div> <b-form-textarea id="textarea" v-model="delivery_address" placeholder="ที่อยู่การจัดส่ง" rows="6"
+                max-rows="10"></b-form-textarea>
+            </div>
+          </b-tab>
+        </b-tabs>
       </div>
+      <template #modal-footer="{ cancel }">
+
+        <!-- Emulate built in modal footer ok and cancel button actions -->
+        <b-button size="sm" variant="primary" @click="sendOrder">
+          ยืนยันการสั่งซื้อ
+        </b-button>
+        <b-button size="sm" @click="cancel()">
+          ยกเลิก
+        </b-button>
+
+      </template>
     </b-modal>
   </div>
 </template>
@@ -53,17 +78,50 @@
 <script>
 import { useMainStore } from "../store";
 import { mapState } from 'pinia'
+import { uuid } from 'uuidv4';
+import axios from "axios"
+var base_url = "http://127.0.0.1:3333"
 export default {
-  setup() {
-    const carts = useMainStore()
-    function removeCart(index) {
-      carts.removeCart(index)
+  data() {
+    return {
+      delivery_address: ""
     }
-    return { removeCart }
+  },
+  setup() {
+    const mainStore = useMainStore()
+
+    return { mainStore }
   },
   methods: {
     showModal() {
       this.$refs['modal-cart'].show()
+    },
+    async sendOrder() {
+      var user_id = this.mainStore.$state.user_id
+
+      var record = {
+        user_id,
+        delivery_address: this.delivery_address,
+        items:this.mainStore.$state.carts.map((item)=>{
+          return {
+            qty:item.qty,
+            product_id:item.id,
+            id:uuid()
+          }
+        })
+      }
+
+      try {
+        await axios.post(base_url + "/order/product", { ...record })
+        alert("บันทึกข้อมูลเรียบร้อย")
+      } catch (error) {
+        alert(error.message)
+      }
+
+      
+
+      console.log(record);
+
     }
   },
   computed: {
@@ -73,10 +131,14 @@ export default {
     }
   },
   watch: {
-    carts(newCart) {
-      localStorage.setItem("carts", JSON.stringify(newCart))
+    carts: {
+      handler: function (newValue) {
+        localStorage.setItem("carts", JSON.stringify(newValue))
+      },
+      deep: true
     }
   }
+
 
 };
 </script>
