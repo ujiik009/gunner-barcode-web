@@ -2,32 +2,67 @@
     <div class="body">
         <div id="content">
             <h1>Welcome!</h1>
-            <form action="" method="get">
+            <div action="">
                 <div class="input-bar">
                     <!-- <label for="name">username</label> -->
                     <input type="text" id="name" class="input" v-model="username">
-                    <box-icon name='user'></box-icon>
+
                 </div>
                 <div class="input-bar">
                     <!-- <label for="password">password</label> -->
                     <input type="password" id="password" class="input" v-model="password">
-                    <box-icon name='lock-alt'></box-icon>
+
                 </div>
-            </form>
-            <button type="submit" id="btn">Login</button>
+            </div>
+            <button type="submit" id="btn" @click="login">Login</button>
         </div>
     </div>
 </template>
   
 <script>
-
+import axios from "axios"
+var base_url = "http://127.0.0.1:3333"
 export default {
     data() {
         return {
-            username: "",
-            password: ""
+            username: "apirat",
+            password: "123456789"
         }
-    }
+    },
+    methods: {
+        login() {
+            axios.post(base_url + "/login", {
+                username: this.username,
+                password: this.password
+            })
+                .then((response) => {
+                    if (response.data.status == true) {
+
+                        localStorage.setItem("token", response.data.token)
+                        localStorage.setItem("refreshToken", response.data.refreshToken)
+                        localStorage.setItem("user", JSON.stringify(response.data.user))
+
+                        switch (response.data.user.role) {
+                            case "ADMIN": {
+                                this.$router.push(`/admin`)
+                                break;
+                            }
+                            case "USER":{
+                                this.$router.push(`/`)
+                                break;
+                            }
+                            default:
+                                break;
+                        }
+                    } else {
+                        alert(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    alert(error)
+                })
+        }
+    },
 }
 </script>
   

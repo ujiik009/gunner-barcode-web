@@ -7,19 +7,19 @@
       <div class="item-section-menu">
         <div class="menu-list-sestion">
           <div class="menu-btn">
-            <router-link to="/home" class="link">หน้าแรก</router-link>
+            <router-link to="/main" class="link">หน้าแรก</router-link>
           </div>
           <div class="menu-btn">
-            <router-link to="/stickerdesign" class="link">ออกแบบสติ๊กเกอร์</router-link>
+            <router-link to="/main/stickerdesign" class="link">ออกแบบสติ๊กเกอร์</router-link>
           </div>
           <div class="menu-btn">
-            <router-link to="/claim" class="link">ส่งซ่อม</router-link>
+            <router-link to="/main/claim" class="link">ส่งซ่อม</router-link>
           </div>
           <div class="menu-btn">
-            <router-link to="/about-me" class="link">ติดต่อเรา</router-link>
+            <router-link to="/main/about-me" class="link">ติดต่อเรา</router-link>
           </div>
           <div class="menu-btn">
-            <router-link to="/vdo" class="link">วีดีโอแนะนำ</router-link>
+            <router-link to="/main/vdo" class="link">วีดีโอแนะนำ</router-link>
           </div>
         </div>
       </div>

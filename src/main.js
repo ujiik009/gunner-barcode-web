@@ -12,14 +12,15 @@ import LazyTube from "vue-lazytube";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import VueKonva from 'vue-konva';
 import VSwitch from 'v-switch-case'
-
+import MainLayout from '@/components/MainLayout.vue'
+import AdminPage from "@/pages/AdminPage.vue"
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { createPinia } from 'pinia'
 
 const pinia = createPinia()
-	
+
 Vue.config.productionTip = false
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
@@ -31,15 +32,42 @@ Vue.use(VueRouter)
 Vue.use(pinia)
 Vue.use(VueKonva);
 Vue.use(VSwitch)
+
 const routes = [
-  { path: '/', redirect: '/home' },
-  { path: '/about-me', component: AboutMe },
-  { path: '/home', component: Home },
-  { path: '/stickerdesign', component: StickerDesign },
-  { path: '/claim', component: Claim },
-  { path: '/vdo', component: Vdo },
-  { path: "/product/detail/:id", component: ProductDetail },
+  { path: '/', redirect: '/main' },
+
+  {
+    path: '/main', component: MainLayout,
+    children: [
+      { path: '', component: Home },
+      { path: 'stickerdesign', component: StickerDesign },
+      { path: 'claim', component: Claim },
+      { path: 'vdo', component: Vdo },
+      { path: "product/detail/:id", component: ProductDetail },
+      { path: 'about-me', component: AboutMe },
+
+    ]
+  },
+  {
+    path: "/admin", component: AdminPage,
+    beforeEnter: (to, from, next) => {
+      var user = localStorage.getItem("user")
+      if(user) {
+        var data_user = JSON.parse(user)
+        if(data_user.role == "ADMIN"){
+          next()
+        }else{
+          next("/login")
+        }
+      }else{
+        next("/login")
+      }
+      
+    }
+  },
   { path: "/login", component: Login }
+
+
 
 
 ]
@@ -51,4 +79,4 @@ new Vue({
   router,
   render: h => h(App),
 })
-.$mount('#app')
+  .$mount('#app')
