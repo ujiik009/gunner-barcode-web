@@ -14,9 +14,16 @@ import VueKonva from 'vue-konva';
 import VSwitch from 'v-switch-case'
 import MainLayout from '@/components/MainLayout.vue'
 import AdminPage from "@/pages/AdminPage.vue"
+import { DatePicker } from 'ant-design-vue';
+import OrderAdminPage from "@/pages/Admin/OrderPage.vue"
+import ClaimAdminPage from "@/pages/Admin/ClaimPage.vue"
+import ProductAdminPage from "@/pages/Admin/ProductPage.vue"
+import EditProductAdminPage from "@/pages/Admin/EditProduct.vue"
+import Antd from 'ant-design-vue';
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'ant-design-vue/dist/antd.css';
 import { createPinia } from 'pinia'
 
 const pinia = createPinia()
@@ -27,11 +34,12 @@ Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 Vue.use(LazyTube);
-
+Vue.use(DatePicker);
 Vue.use(VueRouter)
 Vue.use(pinia)
 Vue.use(VueKonva);
 Vue.use(VSwitch)
+Vue.use(Antd);
 
 const routes = [
   { path: '/', redirect: '/main' },
@@ -50,19 +58,36 @@ const routes = [
   },
   {
     path: "/admin", component: AdminPage,
+    children: [
+      {
+        path: '', component: OrderAdminPage
+      },
+      {
+        path: 'order', component: OrderAdminPage
+      },
+      {
+        path: 'claim', component: ClaimAdminPage
+      },
+      {
+        path: 'product', component: ProductAdminPage
+      },
+      {
+        path: 'product/:product_id', component: EditProductAdminPage
+      }
+    ],
     beforeEnter: (to, from, next) => {
       var user = localStorage.getItem("user")
-      if(user) {
+      if (user) {
         var data_user = JSON.parse(user)
-        if(data_user.role == "ADMIN"){
+        if (data_user.role == "ADMIN") {
           next()
-        }else{
+        } else {
           next("/login")
         }
-      }else{
+      } else {
         next("/login")
       }
-      
+
     }
   },
   { path: "/login", component: Login }

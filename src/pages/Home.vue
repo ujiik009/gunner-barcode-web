@@ -105,7 +105,7 @@ export default {
     },
 
     openDetail(product_id) {
-      this.$router.push(`/product/detail/${product_id}`)
+      this.$router.push(`/main/product/detail/${product_id}`)
     },
     async getProduct() {
       this.setOpenLoading()
