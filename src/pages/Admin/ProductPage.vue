@@ -1,26 +1,25 @@
 <template>
     <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange" :loading="loading"
         :scroll="{ y: 600 }">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-        <span slot="tags" slot-scope="tags">
-            <a-tag v-for="tag in tags" :key="tag"
-                :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'">
-                {{ tag.toUpperCase() }}
-            </a-tag>
-        </span>
         <span slot="action" slot-scope="record">
             <a class="ant-dropdown-link" @click="editProduct(record.id)">Edit</a>
-
         </span>
+        <div slot="img_link" slot-scope="record">
+            <img :src="record.img_link" style="width: 80px;" />
+        </div>
+
     </a-table>
 </template>
 <script>
 import axios from 'axios';
 import { defineComponent } from "vue"
-var base_url = "http://127.0.0.1:3333"
+var base_url = process.env.VUE_APP_API_URL
 const columns = [
-
+    {
+        title: 'รูป',
+        key: 'img_link',
+        scopedSlots: { customRender: 'img_link' },
+    },
     {
         title: 'ชื่อ',
         dataIndex: 'product_name',

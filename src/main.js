@@ -16,6 +16,7 @@ import MainLayout from '@/components/MainLayout.vue'
 import AdminPage from "@/pages/AdminPage.vue"
 import { DatePicker } from 'ant-design-vue';
 import OrderAdminPage from "@/pages/Admin/OrderPage.vue"
+import OrderDetail from "@/pages/Admin/OrderDetail.vue"
 import ClaimAdminPage from "@/pages/Admin/ClaimPage.vue"
 import ProductAdminPage from "@/pages/Admin/ProductPage.vue"
 import EditProductAdminPage from "@/pages/Admin/EditProduct.vue"
@@ -63,7 +64,10 @@ const routes = [
         path: '', component: OrderAdminPage
       },
       {
-        path: 'order', component: OrderAdminPage
+        path: 'order', component: OrderAdminPage,
+      },
+      {
+        path: 'order/:order_id', component: OrderDetail
       },
       {
         path: 'claim', component: ClaimAdminPage

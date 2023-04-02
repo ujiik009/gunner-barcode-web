@@ -131,7 +131,7 @@ import sticker_condition from "../assets/sticker_condition.json"
 import StickerDesignComponent from "../components/StickerDesignComponent.vue"
 import { Chrome } from 'vue-color'
 import axios from "axios"
-var base_url = "http://127.0.0.1:3333"
+var base_url = process.env.VUE_APP_API_URL
 export default {
   components: {
     StickerDesignComponent,

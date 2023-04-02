@@ -80,7 +80,7 @@ import { useMainStore } from "../store";
 import { mapState } from 'pinia'
 import { uuid } from 'uuidv4';
 import axios from "axios"
-var base_url = "http://127.0.0.1:3333"
+var base_url = process.env.VUE_APP_API_URL
 export default {
   data() {
     return {

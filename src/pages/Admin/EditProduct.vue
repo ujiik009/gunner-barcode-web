@@ -25,6 +25,9 @@
                     <a-form-item label="Image Link">
                         <a-input v-model="form.img_link" />
                     </a-form-item>
+                    <a-form-item label="Image Example">
+                        <img class="img-example" :src="form.img_link" style="width:250px" />
+                    </a-form-item>
                     <a-form-item label="Best Seller">
                         <a-switch v-model="form.best_seller" />
                     </a-form-item>
@@ -47,13 +50,13 @@ import axios from 'axios';
 import { defineComponent } from "vue"
 // import { Form, Input, InputNumber, Switch, Button, FormItem } from 'ant-design-vue';
 import { message } from 'ant-design-vue';
-var base_url = "http://127.0.0.1:3333"
+var base_url = process.env.VUE_APP_API_URL
 export default defineComponent({
     created() {
         // console.log(this.$route.params.product_id);
         this.getProductById()
     },
-    
+
 
     data() {
         return {
@@ -86,3 +89,8 @@ export default defineComponent({
     },
 })
 </script>
+<style scoped>
+.img-example {
+    border: 1px solid gray;
+}
+</style>

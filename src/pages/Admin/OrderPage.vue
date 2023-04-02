@@ -18,7 +18,7 @@
 <script>
 import axios from 'axios';
 import { defineComponent } from "vue"
-var base_url = "http://127.0.0.1:3333"
+var base_url = process.env.VUE_APP_API_URL
 const columns = [
     {
         title: 'ID',

@@ -58,7 +58,7 @@
 <script>
 
 import axios from "axios"
-var base_url = "http://127.0.0.1:3333"
+var base_url = process.env.VUE_APP_API_URL
 export default {
   components: {
   },
@@ -95,11 +95,12 @@ export default {
     },
     get_product_by_brand(brand) {
       this.setOpenLoading()
-      axios.post(`${base_url}/products/brand`, {
+      axios.post(`${base_url}/get/products/brand`, {
         brand: brand
       })
         .then((res) => {
           this.products = res.data.data
+          console.log(res.data);
           this.setCloseLoading()
         })
     },
@@ -134,7 +135,8 @@ export default {
   computed: {
     filter_product: function () {
       var text_search = this.text_search
-      return this.products.filter(function (item) {
+      console.log(this.products);
+      return this.products.filter((item) => {
         return new RegExp(text_search, "igm").test(item.product_name)
       })
     }
