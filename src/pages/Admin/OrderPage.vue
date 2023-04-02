@@ -10,7 +10,7 @@
             </a-tag>
         </span>
         <span slot="action" slot-scope="record">
-            <a class="ant-dropdown-link" @click="editProduct(record.id)">Edit</a>
+            <a class="ant-dropdown-link" @click="openOrder(record)">Edit</a>
 
         </span>
     </a-table>
@@ -18,6 +18,7 @@
 <script>
 import axios from 'axios';
 import { defineComponent } from "vue"
+import {useMainStore} from "../../store"
 var base_url = process.env.VUE_APP_API_URL
 const columns = [
     {
@@ -48,9 +49,17 @@ export default defineComponent({
     created() {
         this.getProduct()
     },
+    setup(){
+        const main_store = useMainStore()
+
+        return {
+            main_store
+        }
+    },
     methods: {
-        editProduct(product_id) {
-            this.$router.push(`/admin/product/${product_id}`)
+        openOrder(order_record) {
+            this.main_store.selectOrder(order_record)
+            this.$router.push(`/admin/order/${order_record.id}`)
         },
         getProduct() {
             this.loading = true

@@ -5,7 +5,8 @@ export const useMainStore = defineStore({
     state: () => ({
         todos: [],
         carts: (localStorage.getItem("carts") != null) ? JSON.parse(localStorage.getItem("carts")) : [],
-        user_id:"a7ce4fa7-8b7a-11ed-9a94-b42e99eb5887"
+        user_id: "a7ce4fa7-8b7a-11ed-9a94-b42e99eb5887",
+        order_select: {}
     }),
     getters: {
         getAllTodos() {
@@ -22,6 +23,9 @@ export const useMainStore = defineStore({
         }
     },
     actions: {
+        selectOrder(order) {
+            this.order_select = order
+        },
         addTodo(todo) {
             this.todos.push(todo);
         },
