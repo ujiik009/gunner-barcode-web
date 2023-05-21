@@ -25,7 +25,7 @@ var base_url = process.env.VUE_APP_API_URL
 export default {
     data() {
         return {
-            username: "apirat",
+            username: "earn",
             password: "123456789"
         }
     },
