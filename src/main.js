@@ -20,6 +20,7 @@ import OrderDetail from "@/pages/Admin/OrderDetail.vue"
 import ClaimAdminPage from "@/pages/Admin/ClaimPage.vue"
 import ProductAdminPage from "@/pages/Admin/ProductPage.vue"
 import EditProductAdminPage from "@/pages/Admin/EditProduct.vue"
+import VdoAdminPage from "@/pages/Admin/VdoPage.vue"
 import Antd from 'ant-design-vue';
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -77,7 +78,10 @@ const routes = [
       },
       {
         path: 'product/:product_id', component: EditProductAdminPage
-      }
+      },
+      {
+        path: 'manage-vdo', component: VdoAdminPage
+      },
     ],
     beforeEnter: (to, from, next) => {
       var user = localStorage.getItem("user")

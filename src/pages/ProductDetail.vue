@@ -9,7 +9,7 @@
                 </div>
 
             </div>
-            <div style="flex:2;padding:20px;">
+            <div style="flex:2;padding:20px;font-size: 19px;">
                 <div>
                     <div class="product_name">
                         {{ product_item.product_name }}

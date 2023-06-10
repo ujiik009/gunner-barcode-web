@@ -15,7 +15,7 @@
                   <b-tooltip :target="product_item.id"> {{ product_item.product_name }}</b-tooltip>
                   <img style="height: 350px;width: 350px;" :src="product_item.img_link" alt="" :id="product_item.id"
                     @click="openDetail(product_item.id)" />
-                  <div style="text-align: center">{{ product_item.product_name }} {{ product_item.price }} บาท</div>
+                  <div style="text-align: center;font-size:22px">{{ product_item.product_name }} {{ product_item.price }} บาท</div>
                 </div>
               </b-col>
 
@@ -37,7 +37,7 @@
             <input placeholder="ค้นหา" class="input-search" v-model="text_search" />
           </div>
           <div class="box-std">
-            <div style="font-weight: 500;margin-bottom: 5px;font-size: 18px;">Brand</div>
+            <div style="font-weight: 500;margin-bottom: 5px;font-size: 22px;">Brand</div>
             <div>
               <div v-for="cat in categories" :key="cat.brand">
                 <span class="categories" @click="get_product_by_brand(cat.brand)">{{ cat.brand }} ({{ cat.counting
@@ -171,6 +171,7 @@ export default {
 <style scoped>
 .categories {
   cursor: pointer;
+  font-size:22px;
 }
 
 .categories:hover {

@@ -3,20 +3,24 @@
     <div class="row-item">
       <div class="col-item">
         <h3>สำนักงานใหญ่</h3>
-        <div>
+        <div style="min-height:100px">
           {{ data1 }}
+        </div>
+        <div style="display:flex;justify-content: center;">
+          <img @click="open_map"  src="@/assets/map_company.png" style="cursor: pointer;width:40vw" />
         </div>
       </div>
       <div class="col-item">
         <h3>พันธ์ทิพย์ ประตูน้ำ</h3>
-        <div>
+        <div style="min-height:100px">
           {{ data2 }}
+        </div>
+        <div style="display:flex;justify-content: center;">
+          <img @click="open_map" src="@/assets/map_company.png" style="cursor: pointer;width:40vw" />
         </div>
       </div>
     </div>
     <div class="row-item center">
-
-      <img @click="open_map" src="@/assets/map_company.png" style="cursor: pointer;" />
 
     </div>
     <div>

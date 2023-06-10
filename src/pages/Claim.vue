@@ -1,13 +1,13 @@
 <template>
   <div>
 
-    <div class="main-content">
+    <div class="main-content" style="font-size:19px">
       <div class="img-land-scape">
         <div style="font-size: 40px;">ส่งซ่อมสินค้า</div>
       </div>
 
       <!-- Stepper -->
-      <div class="content">
+      <div class="content" style="font-size:22px">
        
           <b-container fluid="sm">
             <b-row>

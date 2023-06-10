@@ -146,6 +146,7 @@ export default {
 .link {
   text-decoration: none;
   color: inherit;
+  font-size: 22px;
 
 }
 

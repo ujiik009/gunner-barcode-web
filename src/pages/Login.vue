@@ -122,7 +122,7 @@ export default {
     background: none;
     box-sizing: border-box;
     padding: 20px 45px 10px;
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .input-bar>box-icon {

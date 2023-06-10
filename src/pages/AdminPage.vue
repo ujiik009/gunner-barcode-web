@@ -47,6 +47,12 @@ export default defineComponent({
                     title: "จัดการสินค้า",
                     path: "/admin/product",
                     icon: "control"
+                },
+                {
+                    key: "4",
+                    title: "จัดการ VDO",
+                    path: "/admin/manage-vdo",
+                    icon: "youtube"
                 }
             ]
         };
@@ -60,7 +66,7 @@ export default defineComponent({
 }
 
 #components-layout-demo-custom-trigger .trigger {
-    font-size: 18px;
+    font-size: 22px;
     line-height: 64px;
     padding: 0 24px;
     cursor: pointer;

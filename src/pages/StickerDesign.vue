@@ -320,7 +320,7 @@ export default {
 
 .item {
   margin: 30px;
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .label {

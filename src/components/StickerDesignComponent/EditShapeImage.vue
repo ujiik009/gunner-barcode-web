@@ -106,7 +106,7 @@ export default {
     height: 35px;
     display: flex;
     align-items: center;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: 500;
     border-bottom: 1px solid #ccc;
 }
