@@ -105,8 +105,13 @@ export default defineComponent({
     },
 })
 </script>
-<style scoped>
+<style >
 .img-example {
     border: 1px solid gray;
 }
+
+.ant-form-item-label label{
+   font-size: 22px !important;
+}
+
 </style>

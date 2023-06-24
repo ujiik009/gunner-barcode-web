@@ -13,7 +13,7 @@
                 </a-col>
             </a-row>
         </div>
-        <a-modal v-model="show_model_create_vdo" title="เพิ่ม VDO" @ok="confirmCreateVdo">
+        <a-modal :width="750" v-model="show_model_create_vdo" title="เพิ่ม VDO" @ok="confirmCreateVdo">
             <a-form ref="form" :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-form-item label="VDO URL">
                     <a-input v-model="form.url" />

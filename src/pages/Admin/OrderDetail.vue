@@ -37,7 +37,7 @@
 
             </div>
             <div class="order-items">
-                <table>
+                <table style="font-size: 22px">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -119,6 +119,7 @@ export default defineComponent({
     margin-bottom: 20px;
     justify-content: space-between;
     align-items: center;
+    font-size: 22px;
 }
 
 .order-summary p {

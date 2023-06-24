@@ -3,8 +3,8 @@
         <template>
             <div>
                 <a-page-header :title="`Create Product [${form.product_name}]`" />
-                <a-form ref="form" :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-                    <a-form-item label="Product Name">
+                <a-form :size="'32px'" ref="form" :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-form-item label="Product Name" style="font-size: 32px;">
                         <a-input v-model="form.product_name" />
                     </a-form-item>
                     <a-form-item label="Brand">
@@ -90,8 +90,13 @@ export default defineComponent({
     },
 })
 </script>
-<style scoped>
+<style>
 .img-example {
     border: 1px solid gray;
 }
+
+.ant-form-item-label label{
+   font-size: 22px !important;
+}
+
 </style>

@@ -22,6 +22,14 @@ export default {
 </script>
 
 <style>
+.ant-table  table{
+    font-size: 22px;
+}
+
+.ant-form-item-label label{
+   font-size: 22px;
+}
+
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 20px;
