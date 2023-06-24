@@ -7,7 +7,7 @@
           {{ data1 }}
         </div>
         <div style="display:flex;justify-content: center;">
-          <img @click="open_map"  src="@/assets/map_company.png" style="cursor: pointer;width:40vw" />
+          <img @click="open_map(13.732897, 100.433112)"  src="@/assets/headoffice.png" style="cursor: pointer;width:40vw;height: 450px;" />
         </div>
       </div>
       <div class="col-item">
@@ -16,7 +16,7 @@
           {{ data2 }}
         </div>
         <div style="display:flex;justify-content: center;">
-          <img @click="open_map" src="@/assets/map_company.png" style="cursor: pointer;width:40vw" />
+          <img @click="open_map(13.750978671840915,100.53738645077931)" src="@/assets/map_company.png" style="cursor: pointer;width:40vw;height: 450px" />
         </div>
       </div>
     </div>
@@ -53,8 +53,8 @@ export default {
         .open("https://page.line.me/barcodethai?openQrModal=true", "_blank")
         .focus();
     },
-    open_map() {
-      window.open("https://www.google.com/maps/search/?api=1&query=" + this.center.lat + "," + this.center.lng)
+    open_map(lat,lng) {
+      window.open("https://www.google.com/maps/search/?api=1&query=" + lat + "," + lng)
       focus();
     }
   },
