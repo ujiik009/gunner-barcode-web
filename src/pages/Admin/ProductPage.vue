@@ -1,4 +1,10 @@
 <template>
+   <div>
+    <div style="display: flex;justify-content: end;"> 
+        <button class="btn-custom-primary" style="width: auto;"
+        @click="$router.push(`product-create`)"
+             >สร้างสินค้า</button>
+    </div>
     <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange" :loading="loading"
         :scroll="{ y: 600 }">
         <span slot="action" slot-scope="record">
@@ -9,6 +15,8 @@
         </div>
 
     </a-table>
+   </div>
+   
 </template>
 <script>
 import axios from 'axios';

@@ -20,6 +20,7 @@ import OrderDetail from "@/pages/Admin/OrderDetail.vue"
 import ClaimAdminPage from "@/pages/Admin/ClaimPage.vue"
 import ProductAdminPage from "@/pages/Admin/ProductPage.vue"
 import EditProductAdminPage from "@/pages/Admin/EditProduct.vue"
+import CreateProductAdminPage from "@/pages/Admin/CreateProduct.vue"
 import VdoAdminPage from "@/pages/Admin/VdoPage.vue"
 import Antd from 'ant-design-vue';
 // Import Bootstrap an BootstrapVue CSS files (order is important)
@@ -74,7 +75,10 @@ const routes = [
         path: 'claim', component: ClaimAdminPage
       },
       {
-        path: 'product', component: ProductAdminPage
+        path: 'product', component: ProductAdminPage,
+      },
+      {
+        path: 'product-create', component: CreateProductAdminPage,
       },
       {
         path: 'product/:product_id', component: EditProductAdminPage

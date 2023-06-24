@@ -1,24 +1,27 @@
 <template>
-    <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange" :loading="loading"
-        :scroll="{ y: 600 }">
-        <a slot="name" slot-scope="text">{{ text }}</a>
-        <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-        <span slot="tags" slot-scope="tags">
-            <a-tag v-for="tag in tags" :key="tag"
-                :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'">
-                {{ tag.toUpperCase() }}
-            </a-tag>
-        </span>
-        <span slot="action" slot-scope="record">
-            <a class="ant-dropdown-link" @click="openOrder(record)">Edit</a>
+    <div>
+       
+            <a-table :columns="columns" :data-source="data" :pagination="pagination" @change="handleTableChange"
+                :loading="loading" :scroll="{ y: 600 }">
+                <a slot="name" slot-scope="text">{{ text }}</a>
+                <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+                <span slot="tags" slot-scope="tags">
+                    <a-tag v-for="tag in tags" :key="tag"
+                        :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'">
+                        {{ tag.toUpperCase() }}
+                    </a-tag>
+                </span>
+                <span slot="action" slot-scope="record">
+                    <a class="ant-dropdown-link" @click="openOrder(record)">Edit</a>
 
-        </span>
-    </a-table>
+                </span>
+            </a-table>
+    </div>
 </template>
 <script>
 import axios from 'axios';
 import { defineComponent } from "vue"
-import {useMainStore} from "../../store"
+import { useMainStore } from "../../store"
 var base_url = process.env.VUE_APP_API_URL
 const columns = [
     {
@@ -49,7 +52,7 @@ export default defineComponent({
     created() {
         this.getProduct()
     },
-    setup(){
+    setup() {
         const main_store = useMainStore()
 
         return {

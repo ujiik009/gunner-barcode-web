@@ -1,12 +1,8 @@
 <template>
     <div>
         <template>
-            <div style="display: flex;justify-content: end;">
-                <a-button class="btn-custom-primary" type="danger" danger block  style="width: auto;"
-                    @click="deleteProduct">ลบสินค้า</a-button>
-            </div>
             <div>
-                <a-page-header :title="`Edit Product [${form.product_name}]`" />
+                <a-page-header :title="`Create Product [${form.product_name}]`" />
                 <a-form ref="form" :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
                     <a-form-item label="Product Name">
                         <a-input v-model="form.product_name" />
@@ -58,48 +54,37 @@ var base_url = process.env.VUE_APP_API_URL
 export default defineComponent({
     created() {
         // console.log(this.$route.params.product_id);
-        this.getProductById()
+        
     },
 
 
     data() {
         return {
-            product_id: this.$route.params.product_id,
+            
             form: {
                 product_name: "",
                 brand: "",
                 model: "",
-                price: ""
+                price: "",
+                detail:"",
+                category:"",
+                warranty:"",
+                img_link:"",
+                best_seller:false,
+
+
             },
             labelCol: { span: 4 },
             wrapperCol: { span: 14 },
         }
     },
     methods: {
-        deleteProduct(){
-            
-            var cf = confirm("Are you sure you want to delete this product")
-            if(cf) {
-                axios.delete(base_url + `/products/${this.product_id}`)
+        submitForm() {
+            axios.put(base_url + `/products`, { ...this.form })
                 .then((response) => {
-                    
+                    console.log(response.data);
                     message.success(response.data.message);
                     this.$router.push("/admin/product")
-                })
-            }
-        },
-        getProductById() {
-            axios.get(base_url + `/products/${this.product_id}`)
-                .then((response) => {
-                    console.log(response.data);
-                    this.form = response.data.data
-                })
-        },
-        submitForm() {
-            axios.post(base_url + `/products/${this.product_id}`, { ...this.form })
-                .then((response) => {
-                    console.log(response.data);
-                    message.success(response.data.message);
                 })
         },
     },
